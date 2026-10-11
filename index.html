@@ -20,8 +20,9 @@ h1{font-size:28px;margin:6px 0 2px;letter-spacing:-.5px}
 .big{font-size:38px;font-weight:800;letter-spacing:-1px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .tile{background:#f3f4f6;border-radius:16px;padding:14px}
-.tile b{display:block;font-size:20px;margin-top:3px}
+.tile b{display:block;font-size:19px;margin-top:3px}
 .pos{color:var(--green)}.neg{color:var(--red)}
 .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(18px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(10px + env(safe-area-inset-bottom))}
 .nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px;width:25%}
@@ -51,6 +52,8 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 .hidden{display:none!important}
 .actions{display:flex;gap:10px;margin-top:18px}
 .danger{background:#fee2e2;color:var(--red)}
+.day{padding:12px 0;border-bottom:1px solid var(--line)}
+.day:last-child{border:0}
 </style>
 </head>
 <body>
@@ -58,13 +61,14 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 <div id="page-home">
 <div class="row" style="margin-top:8px"><div><h1>Мои финансы</h1><div class="sub" id="today"></div></div></div>
 <div class="card"><div class="sub">Баланс</div><div class="big" id="balance">0 ₽</div>
-<div class="grid" style="margin-top:14px"><div class="tile"><span class="sub">Доходы сегодня</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы сегодня</span><b class="neg" id="outToday">0 ₽</b></div></div></div>
+<div class="grid3" style="margin-top:14px"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="outToday">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="netToday">0 ₽</b></div></div></div>
 <div class="card"><div class="row"><b>Последние операции</b><button class="ghost" style="width:auto;padding:8px 12px" onclick="show('history')">Все</button></div><div id="recent"></div></div>
 </div>
 <div id="page-stats" class="hidden">
 <h1>Статистика</h1>
 <div class="row" style="gap:8px;margin:12px 0"><button class="ghost period on" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div>
-<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:12px"><span class="sub">Разница</span><b id="sNet">0 ₽</b></div></div>
+<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:12px"><span class="sub">Чистая прибыль</span><b id="sNet">0 ₽</b></div></div>
+<div class="card"><b>По дням</b><div id="days" style="margin-top:8px"></div></div>
 <div class="card"><b>Расходы по категориям</b><div id="cats" style="margin-top:12px"></div></div>
 </div>
 <div id="page-history" class="hidden">
@@ -84,19 +88,19 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 <button data-page="settings" onclick="show('settings')"><span>⚙️</span>Ещё</button>
 </div>
 <div class="sheet" id="add"><div class="panel"><div class="grab"></div>
-<div class="row"><input id="say" placeholder="Например: вчера продукты 1 250 ₽" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
-<div class="sub" id="hint" style="margin-top:8px">Скажите или напишите естественно — приложение определит сумму, дату и категорию.</div>
+<div class="row"><input id="say" placeholder="Например: вчера заработал 150 долларов" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
+<div class="sub" id="hint" style="margin-top:8px">Можно говорить в рублях или долларах — приложение определит сумму, дату и категорию.</div>
 <div class="parse hidden" id="parsed"></div>
 <div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div>
 <label>Название</label><input id="title">
-<div class="grid"><div><label>Сумма</label><input id="amount" type="number" inputmode="decimal"></div><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT</option></select></div></div>
+<div class="grid"><div><label>Сумма</label><input id="amount" type="number" inputmode="decimal"></div><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT / $</option></select></div></div>
 <div id="usdt" class="hidden"><div class="sub" id="rate" style="margin-top:8px">Курс загружается…</div></div>
 <label>Категория</label><select id="cat"></select>
 <label>Дата и время</label><input id="dt" type="datetime-local">
 <div class="actions"><button class="ghost" onclick="closeAdd()">Отмена</button><button class="primary" onclick="saveTx()">Сохранить</button></div>
 </div></div>
 <script>
-const K='financeAppV2',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
+const K='financeAppV3',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
 let db=JSON.parse(localStorage.getItem(K)||'null')||{tx:[],cats:structuredClone(DEF),rate:null};
 let type=0,edit=null,period='week',rec=null,live=false;
 const $=id=>document.getElementById(id);
@@ -105,6 +109,7 @@ const rub=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
 const rubOf=t=>t.cur==='USDT'?(t.rub||0):t.amount;
 const loc=d=>{const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`};
 const when=s=>new Date(s).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+const dayKey=s=>new Date(s).toLocaleDateString('ru-RU');
 function show(p){['home','stats','history','settings'].forEach(x=>$('page-'+x).classList.toggle('hidden',x!==p));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}
 function setType(i){type=i;$('chipOut').classList.toggle('on',!i);$('chipIn').classList.toggle('on',!!i);cats()}
 function cats(){const c=type?db.cats.inc:db.cats.out;$('cat').innerHTML=c.map(x=>`<option>${x}</option>`).join('')}
@@ -114,13 +119,13 @@ else{$('title').value='';$('amount').value='';$('dt').value=loc(new Date());curC
 function closeAdd(){$('add').classList.remove('open')}
 const RULES=[[/продукт|магнит|пятёрочк|перекрёсток|лента|ашан|супермаркет|овощ|фрукт|мясо/i,'Продукты'],[/кафе|кофе|ресторан|обед|ужин|завтрак|пицц|бургер|шаверм/i,'Кафе'],[/такси|uber|яндекс go|метро|автобус|бензин|заправк|парковк/i,'Транспорт'],[/аренд|кварт|ипотек|коммунал|жкх|электр|вода|интернет/i,'Жильё'],[/аптек|лекарств|врач|клиник|стомат|здоров/i,'Здоровье'],[/одежд|обув/i,'Одежда'],[/кино|игр|развлеч|концерт|подписк/i,'Развлечения'],[/связь|мтс|билайн|мегафон|телефон/i,'Связь'],[/учеб|курс|книг/i,'Образование'],[/зарплат|зп|оклад/i,'Зарплата'],[/фриланс|заказ|клиент/i,'Фриланс'],[/подарок|подарили/i,'Подарки'],[/инвест|дивиденд|процент|кешбэк/i,'Инвестиции']];
 function parse(text){text=(text||'').trim();const r={title:'',amount:null,cur:'RUB',type:0,cat:'',date:new Date()};
-const m=text.match(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*)?/i);
-if(m){r.amount=parseFloat(m[1].replace(/[^\d.,]/g,'').replace(',','.'));if(m[2]&&/usdt|usd|долл/i.test(m[2]))r.cur='USDT'}
+const m=text.match(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*|\$)?/i);
+if(m){r.amount=parseFloat(m[1].replace(/[^\d.,]/g,'').replace(',','.'));if(m[2]&&/usdt|usd|долл|\$/i.test(m[2]))r.cur='USDT'}
 if(/вчера/i.test(text))r.date.setDate(r.date.getDate()-1);
 if(/позавчера/i.test(text))r.date.setDate(r.date.getDate()-2);
 if(/получил|зарплата|зп|доход|заработал|фриланс|подарок|подарили|инвест|дивиденд|кешбэк/i.test(text))r.type=1;
 for(const[re,cat]of RULES)if(re.test(text)){r.cat=cat;break}
-r.title=text.replace(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*)?/i,'').replace(/\b(вчера|позавчера|сегодня|купил|купила|потратил|потратила|получил|получила)\b/gi,' ').replace(/\s+/g,' ').trim();
+r.title=text.replace(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*|\$)?/i,'').replace(/\b(вчера|позавчера|сегодня|купил|купила|потратил|потратила|получил|получила|заработал|заработала)\b/gi,' ').replace(/\s+/g,' ').trim();
 if(!r.cat)r.cat='Другое';return r}
 function preview(){const p=parse($('say').value);if(!p.amount&&!p.title){$('parsed').classList.add('hidden');return}
 $('parsed').classList.remove('hidden');$('parsed').innerHTML=`Распознано: <b>${p.type?'доход':'расход'}</b> · <b>${p.amount?p.amount+' '+(p.cur==='USDT'?'USDT':'₽'):'сумма не найдена'}</b> · ${p.cat} · ${when(p.date)}`;
@@ -131,7 +136,7 @@ if(live){rec.stop();return}rec=new SR();rec.lang='ru-RU';rec.interimResults=fals
 rec.onresult=e=>{$('say').value=e.results[0][0].transcript;preview()};
 rec.onend=()=>{live=false;$('mic').classList.remove('rec')};
 rec.onerror=()=>{live=false;$('mic').classList.remove('rec');$('hint').textContent='Не удалось распознать. Попробуйте ещё раз или введите вручную.'};
-try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера продукты 1250 рублей».'}catch(e){$('hint').textContent='Разрешите микрофон в настройках Safari.'}}
+try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера заработал 150 долларов».'}catch(e){$('hint').textContent='Разрешите микрофон в настройках Safari.'}}
 async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен. Сумма в рублях не будет рассчитана.'}
 function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
 function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
@@ -143,16 +148,19 @@ function editTx(id){openAdd(id)}
 function render(){
 let bal=0;db.tx.forEach(t=>bal+=t.type?rubOf(t):-rubOf(t));$('balance').textContent=rub(bal);
 const today=new Date().toDateString();let i=0,o=0;db.tx.forEach(t=>{if(new Date(t.date).toDateString()===today){t.type?i+=rubOf(t):o+=rubOf(t)}});
-$('inToday').textContent=rub(i);$('outToday').textContent=rub(o);$('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
+$('inToday').textContent=rub(i);$('outToday').textContent=rub(o);const net=i-o;$('netToday').textContent=rub(net);$('netToday').className=net>=0?'pos':'neg';
+$('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
 const sorted=[...db.tx].sort((a,b)=>new Date(b.date)-new Date(a.date));
 const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="amt ${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount.toFixed(2)+' USDT':rub(t.amount)}</div><div class="m"><button class="ghost" style="width:auto;padding:5px 9px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:5px 9px;font-size:12px;color:var(--red)" onclick="del('${t.id}')">Удалить</button></div></div></div>`;
 $('recent').innerHTML=sorted.slice(0,5).map(row).join('')||'<div class="sub">Пока нет операций.</div>';
 $('all').innerHTML=sorted.map(row).join('')||'<div class="sub">Пока нет операций.</div>';
 const now=new Date();let from=new Date(0);
 if(period==='week'){from=new Date(now);from.setDate(now.getDate()-6);from.setHours(0,0,0,0)}else if(period==='month')from=new Date(now.getFullYear(),now.getMonth(),1);
-const list=db.tx.filter(t=>new Date(t.date)>=from);let si=0,so=0;const cc={};
-list.forEach(t=>{const v=rubOf(t);t.type?si+=v:(so+=v,cc[t.cat]=(cc[t.cat]||0)+v)});
+const list=db.tx.filter(t=>new Date(t.date)>=from);let si=0,so=0;const cc={},days={};
+list.forEach(t=>{const v=rubOf(t),k=dayKey(t.date);days[k]=days[k]||{i:0,o:0};t.type?(si+=v,days[k].i+=v):(so+=v,days[k].o+=v,cc[t.cat]=(cc[t.cat]||0)+v)});
 $('sIn').textContent=rub(si);$('sOut').textContent=rub(so);$('sNet').textContent=rub(si-so);
+const dkeys=Object.keys(days).sort((a,b)=>new Date(b.split('.').reverse().join('-'))-new Date(a.split('.').reverse().join('-')));
+$('days').innerHTML=dkeys.map(k=>{const d=days[k],n=d.i-d.o;return `<div class="day"><div class="row"><b>${k}</b><b class="${n>=0?'pos':'neg'}">${n>=0?'+':''}${rub(n)}</b></div><div class="m">Доходы: ${rub(d.i)} · Расходы: ${rub(d.o)}</div></div>`}).join('')||'<div class="sub">Пока нет данных.</div>';
 const mx=Math.max(1,...Object.values(cc));
 $('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div style="margin-bottom:12px"><div class="row"><span>${n}</span><b>${rub(v)}</b></div><div style="height:8px;background:#f3f4f6;border-radius:99px;margin-top:6px"><div style="width:${v/mx*100}%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>`).join('')||'<div class="sub">Нет расходов за период.</div>';
 }
