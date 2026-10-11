@@ -4,261 +4,167 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0b0f14">
-<title>Мои финансы</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f5f6f8">
+<title>Финансы</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
-:root{--bg:#0b0f14;--card:#151b23;--card2:#1c242e;--text:#eef2f6;--muted:#8b98a5;--green:#4ade80;--red:#f87171;--blue:#60a5fa;--border:#26303b}
+:root{--bg:#f5f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--green:#16a34a;--red:#dc2626}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Arial,sans-serif;padding-bottom:96px}
-.app{max-width:520px;margin:0 auto;padding:16px 16px 0}
-header{display:flex;align-items:center;justify-content:space-between;padding:8px 0 14px}
-h1{font-size:22px;margin:0}
-.small{font-size:13px;color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px}
-.balance{font-size:34px;font-weight:700;letter-spacing:-.5px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:var(--card2);border-radius:14px;padding:12px}
-.stat b{display:block;font-size:18px}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Arial,sans-serif;padding-bottom:92px}
+.wrap{max-width:560px;margin:0 auto;padding:18px 18px 0}
+h1{font-size:28px;margin:6px 0 2px;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:14px}
+.card{background:var(--card);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 1px 2px rgba(16,24,40,.06)}
+.big{font-size:38px;font-weight:800;letter-spacing:-1px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:#f3f4f6;border-radius:16px;padding:14px}
+.tile b{display:block;font-size:20px;margin-top:3px}
 .pos{color:var(--green)}.neg{color:var(--red)}
-.tabs{display:flex;gap:8px;margin:2px 0 14px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:9px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:14px}
-.tab.active{background:#e8f0ff;color:#0b1220;border-color:#e8f0ff;font-weight:600}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(18px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(10px + env(safe-area-inset-bottom))}
+.nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px;width:25%}
+.nav button.active{color:var(--blue);font-weight:600}
+.nav span{font-size:22px}
+.add{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;box-shadow:0 8px 20px rgba(37,99,235,.35)}
 button{font:inherit;border:0;cursor:pointer}
-.primary{width:100%;padding:15px;border-radius:16px;background:var(--green);color:#05230f;font-weight:700;font-size:17px}
-.ghost{background:var(--card2);color:var(--text);border:1px solid var(--border);padding:12px 14px;border-radius:14px;width:100%}
-.row{display:flex;gap:10px;align-items:center}
-input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:13px;border-radius:14px;font:inherit;outline:none}
-input:focus,select:focus{border-color:var(--blue)}
-label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
-.tx{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
-.tx:last-child{border:0}
-.tx .t{font-weight:600}
-.tx .m{font-size:13px;color:var(--muted)}
-.amount{white-space:nowrap;font-weight:700}
-.chip{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--card2);border:1px solid var(--border);font-size:12px;color:var(--muted)}
-.bar{height:9px;border-radius:99px;background:var(--card2);overflow:hidden;margin-top:7px}
-.bar i{display:block;height:100%;background:var(--blue)}
-.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));width:min(480px,calc(100% - 32px));z-index:20}
-.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:30;align-items:flex-end;justify-content:center}
+.ghost{background:#f3f4f6;color:var(--text);border-radius:14px;padding:13px 15px;width:100%}
+.primary{background:var(--blue);color:#fff;border-radius:16px;padding:16px;width:100%;font-weight:700;font-size:17px}
+input,select,textarea{width:100%;background:#f3f4f6;border:1.5px solid transparent;border-radius:14px;padding:14px;font:inherit;color:var(--text);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);background:#fff}
+label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
+.sheet{position:fixed;inset:0;background:rgba(17,24,39,.4);display:none;z-index:40;align-items:flex-end;justify-content:center}
 .sheet.open{display:flex}
-.sheet-inner{width:min(520px,100%);background:var(--bg);border-radius:22px 22px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
-.handle{width:42px;height:5px;border-radius:99px;background:#39434e;margin:0 auto 14px}
-.actions{display:flex;gap:10px;margin-top:16px}
-.danger{background:#3a1d20;color:var(--red);border:1px solid #5b2a2e}
-.mic{width:52px;height:52px;border-radius:50%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-size:22px;flex:0 0 auto}
-.mic.rec{background:var(--red);color:#fff;border-color:var(--red)}
+.panel{width:min(560px,100%);background:#fff;border-radius:24px 24px 0 0;padding:14px 18px calc(24px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto}
+.grab{width:40px;height:5px;border-radius:99px;background:#d1d5db;margin:0 auto 14px}
+.mic{width:56px;height:56px;border-radius:50%;background:#f3f4f6;font-size:24px;flex:0 0 auto}
+.mic.rec{background:var(--red);color:#fff}
+.parse{background:#eef4ff;border-radius:14px;padding:12px;margin-top:12px;font-size:14px}
+.chips{display:flex;gap:8px;margin-top:10px}
+.chip{padding:8px 14px;border-radius:999px;background:#f3f4f6;font-size:14px}
+.chip.on{background:var(--blue);color:#fff}
+.tx{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tx:last-child{border:0}
+.t{font-weight:600}.m{font-size:13px;color:var(--muted)}
+.amt{font-weight:700;white-space:nowrap}
 .hidden{display:none!important}
-.rate{font-size:12px;color:var(--muted);margin-top:8px}
+.actions{display:flex;gap:10px;margin-top:18px}
+.danger{background:#fee2e2;color:var(--red)}
 </style>
 </head>
 <body>
-<div class="app">
-<header>
-  <div><h1>Мои финансы</h1><div class="small" id="todayLabel"></div></div>
-  <button class="ghost" style="width:auto" onclick="openSettings()">⚙︎</button>
-</header>
-
-<div class="card">
-  <div class="small">Общий баланс</div>
-  <div class="balance" id="balance">0 ₽</div>
-  <div class="grid" style="margin-top:14px">
-    <div class="stat"><span class="small">Доходы сегодня</span><b class="pos" id="todayIn">0 ₽</b></div>
-    <div class="stat"><span class="small">Расходы сегодня</span><b class="neg" id="todayOut">0 ₽</b></div>
-  </div>
+<div class="wrap">
+<div id="page-home">
+<div class="row" style="margin-top:8px"><div><h1>Мои финансы</h1><div class="sub" id="today"></div></div></div>
+<div class="card"><div class="sub">Баланс</div><div class="big" id="balance">0 ₽</div>
+<div class="grid" style="margin-top:14px"><div class="tile"><span class="sub">Доходы сегодня</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы сегодня</span><b class="neg" id="outToday">0 ₽</b></div></div></div>
+<div class="card"><div class="row"><b>Последние операции</b><button class="ghost" style="width:auto;padding:8px 12px" onclick="show('history')">Все</button></div><div id="recent"></div></div>
 </div>
-
-<div class="tabs" id="periodTabs">
-  <button class="tab active" data-period="today">Сегодня</button>
-  <button class="tab" data-period="week">Неделя</button>
-  <button class="tab" data-period="month">Месяц</button>
-  <button class="tab" data-period="custom">Период</button>
+<div id="page-stats" class="hidden">
+<h1>Статистика</h1>
+<div class="row" style="gap:8px;margin:12px 0"><button class="ghost period on" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div>
+<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:12px"><span class="sub">Разница</span><b id="sNet">0 ₽</b></div></div>
+<div class="card"><b>Расходы по категориям</b><div id="cats" style="margin-top:12px"></div></div>
 </div>
-
-<div id="customRange" class="card hidden">
-  <label>С даты</label><input type="date" id="fromDate">
-  <label>По дату</label><input type="date" id="toDate">
-  <div style="height:10px"></div><button class="ghost" onclick="render()">Показать</button>
+<div id="page-history" class="hidden">
+<h1>История</h1><div class="card"><div id="all"></div></div><button class="ghost" onclick="exportCSV()">Экспорт в CSV</button>
 </div>
-
-<div class="card">
-  <div class="row" style="justify-content:space-between"><b id="periodTitle">Сегодня</b><span class="small" id="periodTotal"></span></div>
-  <div class="grid" style="margin-top:12px">
-    <div class="stat"><span class="small">Доходы</span><b class="pos" id="periodIn">0 ₽</b></div>
-    <div class="stat"><span class="small">Расходы</span><b class="neg" id="periodOut">0 ₽</b></div>
-  </div>
-</div>
-
-<div class="card">
-  <b>Расходы по категориям</b>
-  <div id="categories" style="margin-top:10px"></div>
-</div>
-
-<div class="card">
-  <div class="row" style="justify-content:space-between"><b>История</b><button class="ghost" style="width:auto;padding:8px 12px" onclick="exportCSV()">CSV</button></div>
-  <div id="history" style="margin-top:6px"></div>
+<div id="page-settings" class="hidden">
+<h1>Настройки</h1>
+<div class="card"><b>Данные на этом устройстве</b><p class="sub">Финансовые записи хранятся только в Safari на вашем iPhone. Делайте резервную копию.</p><button class="ghost" onclick="backup()">Скачать резервную копию</button><div style="height:10px"></div><label>Восстановить из файла</label><input type="file" id="restore" accept=".json"><div style="height:10px"></div><button class="ghost danger" onclick="wipe()">Удалить все данные</button></div>
+<div class="card"><b>Категории</b><label>Расходы</label><textarea id="catOut" rows="4"></textarea><label>Доходы</label><textarea id="catIn" rows="3"></textarea><div style="height:10px"></div><button class="ghost" onclick="saveCats()">Сохранить категории</button></div>
 </div>
 </div>
-
-<div class="fab"><button class="primary" onclick="openSheet()">＋ Добавить операцию</button></div>
-
-<div class="sheet" id="sheet">
-<div class="sheet-inner">
-<div class="handle"></div>
-<div class="row"><input id="quick" placeholder="Например: Картошка 70 рублей" style="flex:1"><button class="mic" id="mic" onclick="toggleMic()">🎙</button></div>
-<div class="small" id="micHint" style="margin-top:7px">Можно написать текстом или нажать микрофон и сказать сумму и название.</div>
-
-<label>Тип</label>
-<div class="row"><button class="ghost" id="typeExpense" onclick="setType('expense')">Расход</button><button class="ghost" id="typeIncome" onclick="setType('income')">Доход</button></div>
-
-<label>Название</label><input id="title" placeholder="Например: Продукты">
-<label>Сумма</label><input id="amount" type="number" inputmode="decimal" placeholder="0">
-<label>Валюта</label>
-<select id="currency" onchange="currencyChanged()"><option value="RUB">₽ Рубли</option><option value="USDT">USDT</option></select>
-<div id="usdtBox" class="hidden">
-  <div class="rate" id="rateInfo">Курс загружается…</div>
+<button class="add" onclick="openAdd()">＋</button>
+<div class="nav">
+<button class="active" data-page="home" onclick="show('home')"><span>🏠</span>Главная</button>
+<button data-page="stats" onclick="show('stats')"><span>📊</span>Статистика</button>
+<button data-page="history" onclick="show('history')"><span>🕘</span>История</button>
+<button data-page="settings" onclick="show('settings')"><span>⚙️</span>Ещё</button>
 </div>
-<label>Категория</label><select id="category"></select>
-<label>Дата и время</label><input id="datetime" type="datetime-local">
-<div class="actions">
-  <button class="ghost" onclick="closeSheet()">Отмена</button>
-  <button class="primary" onclick="saveTx()">Сохранить</button>
-</div>
-</div>
-</div>
-
-<div class="sheet" id="settings">
-<div class="sheet-inner">
-<div class="handle"></div>
-<b>Настройки и данные</b>
-<p class="small">Данные хранятся только в этом браузере на вашем устройстве. Не удаляйте данные Safari для этого сайта, иначе история может исчезнуть. Регулярно сохраняйте резервную копию.</p>
-<label>Категории расходов</label><textarea id="expenseCats" rows="4"></textarea>
-<label>Категории доходов</label><textarea id="incomeCats" rows="4"></textarea>
-<div style="height:12px"></div>
-<button class="ghost" onclick="saveCats()">Сохранить категории</button>
-<div style="height:10px"></div>
-<button class="ghost" onclick="backup()">Скачать резервную копию</button>
-<div style="height:10px"></div>
-<label>Восстановление из файла</label><input type="file" id="restoreFile" accept=".json">
-<div style="height:10px"></div>
-<button class="danger" onclick="clearAll()">Удалить все данные</button>
-<div class="actions"><button class="ghost" onclick="closeSettings()">Закрыть</button></div>
-</div>
-</div>
-
+<div class="sheet" id="add"><div class="panel"><div class="grab"></div>
+<div class="row"><input id="say" placeholder="Например: вчера продукты 1 250 ₽" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
+<div class="sub" id="hint" style="margin-top:8px">Скажите или напишите естественно — приложение определит сумму, дату и категорию.</div>
+<div class="parse hidden" id="parsed"></div>
+<div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div>
+<label>Название</label><input id="title">
+<div class="grid"><div><label>Сумма</label><input id="amount" type="number" inputmode="decimal"></div><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT</option></select></div></div>
+<div id="usdt" class="hidden"><div class="sub" id="rate" style="margin-top:8px">Курс загружается…</div></div>
+<label>Категория</label><select id="cat"></select>
+<label>Дата и время</label><input id="dt" type="datetime-local">
+<div class="actions"><button class="ghost" onclick="closeAdd()">Отмена</button><button class="primary" onclick="saveTx()">Сохранить</button></div>
+</div></div>
 <script>
-const LS='financeAppV1';
-const DEF={expense:['Продукты','Кафе и рестораны','Транспорт','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],income:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
-let db=JSON.parse(localStorage.getItem(LS)||'null')||{transactions:[],categories:JSON.parse(JSON.stringify(DEF)),usdtRate:null};
-let type='expense', editingId=null, period='today', recognition=null, recording=false;
-
-function save(){localStorage.setItem(LS,JSON.stringify(db))}
-function money(n,cur){return cur==='USDT'?n.toFixed(2)+' USDT':Math.round(n).toLocaleString('ru-RU')+' ₽'}
-function rub(n){return Math.round(n).toLocaleString('ru-RU')+' ₽'}
-function txRub(t){return t.currency==='USDT'?(t.amountRUB??0):t.amount}
-function fmtDT(s){const d=new Date(s);return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'short'})+', '+d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}
-
-function start(){if(!db.categories)db.categories=JSON.parse(JSON.stringify(DEF));document.getElementById('todayLabel').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});fillCats();render();getRate();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')}
-
-function fillCats(){const c=db.categories[type]||[];const sel=document.getElementById('category');sel.innerHTML=c.map(x=>`<option>${x}</option>`).join('')}
-function setType(t){type=t;document.getElementById('typeExpense').style.borderColor=t==='expense'?'var(--red)':'var(--border)';document.getElementById('typeIncome').style.borderColor=t==='income'?'var(--green)':'var(--border)';fillCats()}
-
-function openSheet(id){editingId=id||null;const s=document.getElementById('sheet');s.classList.add('open');
- if(id){const t=db.transactions.find(x=>x.id===id);setType(t.type);document.getElementById('title').value=t.title;document.getElementById('amount').value=t.amount;document.getElementById('currency').value=t.currency;document.getElementById('datetime').value=t.datetime.slice(0,16);document.getElementById('category').value=t.category;currencyChanged()}
- else{setType('expense');document.getElementById('title').value='';document.getElementById('amount').value='';document.getElementById('datetime').value=toLocal(new Date());currencyChanged()}
-}
-function closeSheet(){document.getElementById('sheet').classList.remove('open')}
-function toLocal(d){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
-
-async function getRate(){
- const box=document.getElementById('rateInfo');
- try{
-  const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');
-  const j=await r.json();
-  if(j&&j.rates&&j.rates.RUB){db.usdtRate={value:j.rates.RUB,at:new Date().toISOString(),source:'exchangerate.host'};save();showRate()}
-  else box.textContent='Курс USDT сейчас недоступен. Можно сохранить операцию в USDT без пересчёта.'
- }catch(e){box.textContent='Курс USDT сейчас недоступен. Можно сохранить операцию в USDT без пересчёта.'}
-}
-function showRate(){const r=db.usdtRate;if(!r){document.getElementById('rateInfo').textContent='Курс пока не получен.';return}
- document.getElementById('rateInfo').textContent=`1 USDT ≈ ${r.value.toFixed(2)} ₽ · курс от ${new Date(r.at).toLocaleString('ru-RU')} · источник: ${r.source}`}
-function currencyChanged(){const usdt=document.getElementById('currency').value==='USDT';document.getElementById('usdtBox').classList.toggle('hidden',!usdt);if(usdt)showRate()}
-
-function saveTx(){
- const title=document.getElementById('title').value.trim()||'Без названия';
- const amount=parseFloat(document.getElementById('amount').value);
- if(!amount||amount<=0){alert('Введите сумму больше нуля');return}
- const currency=document.getElementById('currency').value;
- const datetime=document.getElementById('datetime').value||toLocal(new Date());
- const category=document.getElementById('category').value||'Другое';
- let amountRUB=null,rateUsed=null;
- if(currency==='USDT'&&db.usdtRate){amountRUB=amount*db.usdtRate.value;rateUsed={value:db.usdtRate.value,at:db.usdtRate.at,source:db.usdtRate.source}}
- if(editingId){const t=db.transactions.find(x=>x.id===editingId);Object.assign(t,{title,amount,currency,category,datetime,amountRUB,rateUsed})}
- else db.transactions.push({id:Date.now()+''+Math.random().toString(16).slice(2),type,title,amount,currency,category,datetime,amountRUB,rateUsed});
- save();closeSheet();render();
-}
-function delTx(id){if(confirm('Удалить эту операцию? Действие нельзя отменить.')){db.transactions=db.transactions.filter(t=>t.id!==id);save();render()}}
-function editTx(id){openSheet(id)}
-
-function range(){const now=new Date();let from,to;
- if(period==='today'){from=new Date(now.getFullYear(),now.getMonth(),now.getDate());to=now}
- else if(period==='week'){from=new Date(now);from.setDate(now.getDate()-6);from.setHours(0,0,0,0);to=now}
- else if(period==='month'){from=new Date(now.getFullYear(),now.getMonth(),1);to=now}
- else{from=document.getElementById('fromDate').value?new Date(document.getElementById('fromDate').value):new Date(0);to=document.getElementById('toDate').value?new Date(document.getElementById('toDate').value+'T23:59:59'):now}
- return[from,to]}
-
+const K='financeAppV2',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
+let db=JSON.parse(localStorage.getItem(K)||'null')||{tx:[],cats:structuredClone(DEF),rate:null};
+let type=0,edit=null,period='week',rec=null,live=false;
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem(K,JSON.stringify(db));
+const rub=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
+const rubOf=t=>t.cur==='USDT'?(t.rub||0):t.amount;
+const loc=d=>{const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`};
+const when=s=>new Date(s).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+function show(p){['home','stats','history','settings'].forEach(x=>$('page-'+x).classList.toggle('hidden',x!==p));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}
+function setType(i){type=i;$('chipOut').classList.toggle('on',!i);$('chipIn').classList.toggle('on',!!i);cats()}
+function cats(){const c=type?db.cats.inc:db.cats.out;$('cat').innerHTML=c.map(x=>`<option>${x}</option>`).join('')}
+function openAdd(id){edit=id||null;$('add').classList.add('open');$('say').value='';$('parsed').classList.add('hidden');setType(0);
+if(id){const t=db.tx.find(x=>x.id===id);setType(t.type);$('title').value=t.title;$('amount').value=t.amount;$('cur').value=t.cur;$('dt').value=t.date.slice(0,16);$('cat').value=t.cat;curChange()}
+else{$('title').value='';$('amount').value='';$('dt').value=loc(new Date());curChange()}}
+function closeAdd(){$('add').classList.remove('open')}
+const RULES=[[/продукт|магнит|пятёрочк|перекрёсток|лента|ашан|супермаркет|овощ|фрукт|мясо/i,'Продукты'],[/кафе|кофе|ресторан|обед|ужин|завтрак|пицц|бургер|шаверм/i,'Кафе'],[/такси|uber|яндекс go|метро|автобус|бензин|заправк|парковк/i,'Транспорт'],[/аренд|кварт|ипотек|коммунал|жкх|электр|вода|интернет/i,'Жильё'],[/аптек|лекарств|врач|клиник|стомат|здоров/i,'Здоровье'],[/одежд|обув/i,'Одежда'],[/кино|игр|развлеч|концерт|подписк/i,'Развлечения'],[/связь|мтс|билайн|мегафон|телефон/i,'Связь'],[/учеб|курс|книг/i,'Образование'],[/зарплат|зп|оклад/i,'Зарплата'],[/фриланс|заказ|клиент/i,'Фриланс'],[/подарок|подарили/i,'Подарки'],[/инвест|дивиденд|процент|кешбэк/i,'Инвестиции']];
+function parse(text){text=(text||'').trim();const r={title:'',amount:null,cur:'RUB',type:0,cat:'',date:new Date()};
+const m=text.match(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*)?/i);
+if(m){r.amount=parseFloat(m[1].replace(/[^\d.,]/g,'').replace(',','.'));if(m[2]&&/usdt|usd|долл/i.test(m[2]))r.cur='USDT'}
+if(/вчера/i.test(text))r.date.setDate(r.date.getDate()-1);
+if(/позавчера/i.test(text))r.date.setDate(r.date.getDate()-2);
+if(/получил|зарплата|зп|доход|заработал|фриланс|подарок|подарили|инвест|дивиденд|кешбэк/i.test(text))r.type=1;
+for(const[re,cat]of RULES)if(re.test(text)){r.cat=cat;break}
+r.title=text.replace(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*)?/i,'').replace(/\b(вчера|позавчера|сегодня|купил|купила|потратил|потратила|получил|получила)\b/gi,' ').replace(/\s+/g,' ').trim();
+if(!r.cat)r.cat='Другое';return r}
+function preview(){const p=parse($('say').value);if(!p.amount&&!p.title){$('parsed').classList.add('hidden');return}
+$('parsed').classList.remove('hidden');$('parsed').innerHTML=`Распознано: <b>${p.type?'доход':'расход'}</b> · <b>${p.amount?p.amount+' '+(p.cur==='USDT'?'USDT':'₽'):'сумма не найдена'}</b> · ${p.cat} · ${when(p.date)}`;
+setType(p.type);$('title').value=p.title||$('title').value;$('amount').value=p.amount??'';$('cur').value=p.cur;$('cat').value=p.cat;$('dt').value=loc(p.date);curChange()}
+$('say').addEventListener('input',preview);
+function mic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('hint').textContent='Голосовой ввод недоступен. Напишите фразу текстом.';return}
+if(live){rec.stop();return}rec=new SR();rec.lang='ru-RU';rec.interimResults=false;
+rec.onresult=e=>{$('say').value=e.results[0][0].transcript;preview()};
+rec.onend=()=>{live=false;$('mic').classList.remove('rec')};
+rec.onerror=()=>{live=false;$('mic').classList.remove('rec');$('hint').textContent='Не удалось распознать. Попробуйте ещё раз или введите вручную.'};
+try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера продукты 1250 рублей».'}catch(e){$('hint').textContent='Разрешите микрофон в настройках Safari.'}}
+async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен. Сумма в рублях не будет рассчитана.'}
+function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
+function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
+const t={id:edit||Date.now()+''+Math.random().toString(16).slice(2),type,title:$('title').value.trim()||'Без названия',amount,cur:$('cur').value,cat:$('cat').value||'Другое',date:$('dt').value||loc(new Date()),rub:null,rate:null};
+if(t.cur==='USDT'&&db.rate){t.rub=amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}
+if(edit)db.tx=db.tx.map(x=>x.id===edit?t:x);else db.tx.push(t);save();closeAdd();render()}
+function del(id){if(confirm('Удалить операцию?')){db.tx=db.tx.filter(t=>t.id!==id);save();render()}}
+function editTx(id){openAdd(id)}
 function render(){
- let sum=0;db.transactions.forEach(t=>{sum+=t.type==='income'?txRub(t):-txRub(t)});document.getElementById('balance').textContent=rub(sum);
- const today=new Date();let ti=0,to=0;db.transactions.forEach(t=>{const d=new Date(t.datetime);if(d.toDateString()===today.toDateString()){if(t.type==='income')ti+=txRub(t);else to+=txRub(t)}});
- document.getElementById('todayIn').textContent=rub(ti);document.getElementById('todayOut').textContent=rub(to);
- const[f,t2]=range();const list=db.transactions.filter(t=>{const d=new Date(t.datetime);return d>=f&&d<=t2});
- let pi=0,po=0;const cats={};list.forEach(t=>{const v=txRub(t);if(t.type==='income')pi+=v;else{po+=v;cats[t.category]=(cats[t.category]||0)+v}});
- document.getElementById('periodIn').textContent=rub(pi);document.getElementById('periodOut').textContent=rub(po);
- document.getElementById('periodTitle').textContent={today:'Сегодня',week:'Последние 7 дней',month:'Этот месяц',custom:'Выбранный период'}[period];
- document.getElementById('periodTotal').textContent='Итог: '+rub(pi-po);
- const max=Math.max(1,...Object.values(cats));const names=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
- document.getElementById('categories').innerHTML=names.length?names.map(([n,v])=>`<div style="margin-bottom:12px"><div class="row" style="justify-content:space-between"><span>${n}</span><b>${rub(v)}</b></div><div class="bar"><i style="width:${v/max*100}%"></i></div></div>`).join(''):'<div class="small">Пока нет расходов за период.</div>';
- const hist=[...db.transactions].sort((a,b)=>new Date(b.datetime)-new Date(a.datetime));
- document.getElementById('history').innerHTML=hist.length?hist.map(t=>`<div class="tx"><div><div class="t">${t.title} <span class="chip">${t.category}</span></div><div class="m">${fmtDT(t.datetime)}${t.currency==='USDT'&&t.amountRUB?' · '+rub(t.amountRUB):''}</div></div><div style="text-align:right"><div class="amount ${t.type==='income'?'pos':'neg'}">${t.type==='income'?'+':'−'}${money(t.amount,t.currency)}</div><div class="m"><button class="ghost" style="width:auto;padding:4px 8px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:4px 8px;font-size:12px;color:var(--red)" onclick="delTx('${t.id}')">Удалить</button></div></div></div>`).join(''):'<div class="small">Операций пока нет.</div>';
+let bal=0;db.tx.forEach(t=>bal+=t.type?rubOf(t):-rubOf(t));$('balance').textContent=rub(bal);
+const today=new Date().toDateString();let i=0,o=0;db.tx.forEach(t=>{if(new Date(t.date).toDateString()===today){t.type?i+=rubOf(t):o+=rubOf(t)}});
+$('inToday').textContent=rub(i);$('outToday').textContent=rub(o);$('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
+const sorted=[...db.tx].sort((a,b)=>new Date(b.date)-new Date(a.date));
+const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="amt ${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount.toFixed(2)+' USDT':rub(t.amount)}</div><div class="m"><button class="ghost" style="width:auto;padding:5px 9px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:5px 9px;font-size:12px;color:var(--red)" onclick="del('${t.id}')">Удалить</button></div></div></div>`;
+$('recent').innerHTML=sorted.slice(0,5).map(row).join('')||'<div class="sub">Пока нет операций.</div>';
+$('all').innerHTML=sorted.map(row).join('')||'<div class="sub">Пока нет операций.</div>';
+const now=new Date();let from=new Date(0);
+if(period==='week'){from=new Date(now);from.setDate(now.getDate()-6);from.setHours(0,0,0,0)}else if(period==='month')from=new Date(now.getFullYear(),now.getMonth(),1);
+const list=db.tx.filter(t=>new Date(t.date)>=from);let si=0,so=0;const cc={};
+list.forEach(t=>{const v=rubOf(t);t.type?si+=v:(so+=v,cc[t.cat]=(cc[t.cat]||0)+v)});
+$('sIn').textContent=rub(si);$('sOut').textContent=rub(so);$('sNet').textContent=rub(si-so);
+const mx=Math.max(1,...Object.values(cc));
+$('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div style="margin-bottom:12px"><div class="row"><span>${n}</span><b>${rub(v)}</b></div><div style="height:8px;background:#f3f4f6;border-radius:99px;margin-top:6px"><div style="width:${v/mx*100}%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>`).join('')||'<div class="sub">Нет расходов за период.</div>';
 }
-
-document.getElementById('periodTabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;period=b.dataset.period;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('customRange').classList.toggle('hidden',period!=='custom');render()});
-
-function parseQuick(text){
- text=text.trim();const m=text.match(/(\d+(?:[.,]\d+)?)\s*(руб|рубл|₽|usdt|usd|долл|долара)?/i);
- let amount=null,currency='RUB';
- if(m){amount=parseFloat(m[1].replace(',','.'));if(m[2]&&/usdt|usd|долл/i.test(m[2]))currency='USDT';}
- let title=text.replace(/(\d+(?:[.,]\d+)?)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*)?/i,'').replace(/\s{2,}/g,' ').trim();
- return{title:title||'Без названия',amount,currency};
-}
-document.getElementById('quick').addEventListener('change',e=>{const p=parseQuick(e.target.value);if(p.amount){document.getElementById('title').value=p.title;document.getElementById('amount').value=p.amount;document.getElementById('currency').value=p.currency;currencyChanged()}});
-
-function toggleMic(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){document.getElementById('micHint').textContent='Голосовой ввод недоступен в этом браузере. Введите операцию текстом в поле выше.';return}
- if(recording){recognition.stop();return}
- recognition=new SR();recognition.lang='ru-RU';recognition.interimResults=false;
- recognition.onresult=e=>{const text=e.results[0][0].transcript;document.getElementById('quick').value=text;const p=parseQuick(text);if(p.amount){document.getElementById('title').value=p.title;document.getElementById('amount').value=p.amount;document.getElementById('currency').value=p.currency;currencyChanged()}};
- recognition.onend=()=>{recording=false;document.getElementById('mic').classList.remove('rec')};
- recognition.onerror=()=>{recording=false;document.getElementById('mic').classList.remove('rec');document.getElementById('micHint').textContent='Не удалось распознать речь. Попробуйте ещё раз или введите вручную.'};
- try{recognition.start();recording=true;document.getElementById('mic').classList.add('rec');document.getElementById('micHint').textContent='Слушаю… Скажите, например: «Картошка 70 рублей».'}catch(e){document.getElementById('micHint').textContent='Микрофон недоступен. Разрешите доступ к микрофону в настройках Safari.'}
-}
-
-function openSettings(){document.getElementById('settings').classList.add('open');document.getElementById('expenseCats').value=db.categories.expense.join(', ');document.getElementById('incomeCats').value=db.categories.income.join(', ')}
-function closeSettings(){document.getElementById('settings').classList.remove('open')}
-function saveCats(){const parse=s=>s.split(/[,\n]/).map(x=>x.trim()).filter(Boolean);db.categories.expense=parse(document.getElementById('expenseCats').value);db.categories.income=parse(document.getElementById('incomeCats').value);save();fillCats();closeSettings();render()}
-function backup(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='finance-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
-document.getElementById('restoreFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.transactions)throw 0;if(confirm('Заменить текущие данные резервной копией?')){db=d;save();start()}}catch(x){alert('Файл не похож на резервную копию приложения.')}};r.readAsText(f)});
-function clearAll(){if(confirm('Удалить ВСЕ операции и настройки? Это нельзя отменить. Сначала сделайте резервную копию.')){if(confirm('Точно удалить все данные?')){localStorage.removeItem(LS);db={transactions:[],categories:JSON.parse(JSON.stringify(DEF)),usdtRate:null};start()}}}
-function exportCSV(){
- const rows=[['Дата и время','Тип','Название','Категория','Сумма','Валюта','Сумма в рублях','Курс USDT/RUB','Время курса']];
- db.transactions.forEach(t=>rows.push([t.datetime,t.type==='income'?'Доход':'Расход',t.title,t.category,t.amount,t.currency,t.amountRUB??'',t.rateUsed?t.rateUsed.value:'',t.rateUsed?t.rateUsed.at:'']));
- const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finance-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
-}
-start();
+document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.p;document.querySelectorAll('.period').forEach(x=>x.classList.remove('on'));b.classList.add('on');render()});
+function backup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='finance-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
+$('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.tx)throw 0;if(confirm('Заменить текущие данные копией?')){db=d;save();render()}}catch(x){alert('Неверный файл резервной копии.')}};r.readAsText(f)};
+function wipe(){if(confirm('Удалить все данные? Сначала сделайте резервную копию.')&&confirm('Точно удалить?')){localStorage.removeItem(K);db={tx:[],cats:structuredClone(DEF),rate:null};render()}}
+function saveCats(){const p=s=>s.split(/[,\n]/).map(x=>x.trim()).filter(Boolean);db.cats.out=p($('catOut').value);db.cats.inc=p($('catIn').value);save();cats();render()}
+function exportCSV(){const rows=[['Дата','Тип','Название','Категория','Сумма','Валюта','В рублях','Курс','Время курса']];db.tx.forEach(t=>rows.push([t.date,t.type?'Доход':'Расход',t.title,t.cat,t.amount,t.cur,t.rub??'',t.rate?.v??'',t.rate?.at??'']));
+const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finance.csv';a.click()}
+cats();render();rate();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
 </body>
 </html>
