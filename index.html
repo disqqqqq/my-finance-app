@@ -89,7 +89,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 </div>
 <div class="sheet" id="add"><div class="panel"><div class="grab"></div>
 <div class="row"><input id="say" placeholder="Например: вчера заработал 150 долларов" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
-<div class="sub" id="hint" style="margin-top:8px">Можно говорить в рублях или долларах — приложение определит сумму, дату и категорию.</div>
+<div class="sub" id="hint" style="margin-top:8px">Нажмите микрофон и говорите. Если голосовой ввод не работает, используйте диктовку клавиатуры Safari (микрофон рядом с пробелом).</div>
 <div class="parse hidden" id="parsed"></div>
 <div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div>
 <label>Название</label><input id="title">
@@ -100,7 +100,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 <div class="actions"><button class="ghost" onclick="closeAdd()">Отмена</button><button class="primary" onclick="saveTx()">Сохранить</button></div>
 </div></div>
 <script>
-const K='financeAppV3',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
+const K='financeAppV4',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
 let db=JSON.parse(localStorage.getItem(K)||'null')||{tx:[],cats:structuredClone(DEF),rate:null};
 let type=0,edit=null,period='week',rec=null,live=false;
 const $=id=>document.getElementById(id);
@@ -116,7 +116,7 @@ function cats(){const c=type?db.cats.inc:db.cats.out;$('cat').innerHTML=c.map(x=
 function openAdd(id){edit=id||null;$('add').classList.add('open');$('say').value='';$('parsed').classList.add('hidden');setType(0);
 if(id){const t=db.tx.find(x=>x.id===id);setType(t.type);$('title').value=t.title;$('amount').value=t.amount;$('cur').value=t.cur;$('dt').value=t.date.slice(0,16);$('cat').value=t.cat;curChange()}
 else{$('title').value='';$('amount').value='';$('dt').value=loc(new Date());curChange()}}
-function closeAdd(){$('add').classList.remove('open')}
+function closeAdd(){live=false;try{rec&&rec.stop()}catch(e){}$('mic').classList.remove('rec');$('add').classList.remove('open')}
 const RULES=[[/продукт|магнит|пятёрочк|перекрёсток|лента|ашан|супермаркет|овощ|фрукт|мясо/i,'Продукты'],[/кафе|кофе|ресторан|обед|ужин|завтрак|пицц|бургер|шаверм/i,'Кафе'],[/такси|uber|яндекс go|метро|автобус|бензин|заправк|парковк/i,'Транспорт'],[/аренд|кварт|ипотек|коммунал|жкх|электр|вода|интернет/i,'Жильё'],[/аптек|лекарств|врач|клиник|стомат|здоров/i,'Здоровье'],[/одежд|обув/i,'Одежда'],[/кино|игр|развлеч|концерт|подписк/i,'Развлечения'],[/связь|мтс|билайн|мегафон|телефон/i,'Связь'],[/учеб|курс|книг/i,'Образование'],[/зарплат|зп|оклад/i,'Зарплата'],[/фриланс|заказ|клиент/i,'Фриланс'],[/подарок|подарили/i,'Подарки'],[/инвест|дивиденд|процент|кешбэк/i,'Инвестиции']];
 function parse(text){text=(text||'').trim();const r={title:'',amount:null,cur:'RUB',type:0,cat:'',date:new Date()};
 const m=text.match(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*|\$)?/i);
@@ -131,12 +131,17 @@ function preview(){const p=parse($('say').value);if(!p.amount&&!p.title){$('pars
 $('parsed').classList.remove('hidden');$('parsed').innerHTML=`Распознано: <b>${p.type?'доход':'расход'}</b> · <b>${p.amount?p.amount+' '+(p.cur==='USDT'?'USDT':'₽'):'сумма не найдена'}</b> · ${p.cat} · ${when(p.date)}`;
 setType(p.type);$('title').value=p.title||$('title').value;$('amount').value=p.amount??'';$('cur').value=p.cur;$('cat').value=p.cat;$('dt').value=loc(p.date);curChange()}
 $('say').addEventListener('input',preview);
-function mic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('hint').textContent='Голосовой ввод недоступен. Напишите фразу текстом.';return}
-if(live){rec.stop();return}rec=new SR();rec.lang='ru-RU';rec.interimResults=false;
-rec.onresult=e=>{$('say').value=e.results[0][0].transcript;preview()};
-rec.onend=()=>{live=false;$('mic').classList.remove('rec')};
-rec.onerror=()=>{live=false;$('mic').classList.remove('rec');$('hint').textContent='Не удалось распознать. Попробуйте ещё раз или введите вручную.'};
-try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера заработал 150 долларов».'}catch(e){$('hint').textContent='Разрешите микрофон в настройках Safari.'}}
+function mic(){
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){$('hint').textContent='Голосовой ввод недоступен в этом браузере. Нажмите на поле ввода и используйте микрофон на клавиатуре Safari (диктовка).';return}
+if(live){live=false;try{rec.stop()}catch(e){}$('mic').classList.remove('rec');return}
+rec=new SR();rec.lang='ru-RU';rec.continuous=true;rec.interimResults=true;
+let finalText='';
+rec.onresult=e=>{let text='';for(let i=0;i<e.results.length;i++)text+=e.results[i][0].transcript+' ';$('say').value=text.trim();preview()};
+rec.onend=()=>{if(live){try{rec.start()}catch(e){}}else{$('mic').classList.remove('rec')}};
+rec.onerror=e=>{const msgs={'not-allowed':'Разрешите доступ к микрофону в настройках Safari.','service-not-allowed':'Разрешите доступ к микрофону в настройках Safari.','audio-capture':'Микрофон не найден или занят другим приложением.','no-speech':'Речь не распознана. Говорите ближе к микрофону.'};
+$('hint').textContent=msgs[e.error]||'Не удалось распознать речь. Попробуйте ещё раз или используйте диктовку клавиатуры Safari.';};
+try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера заработал 150 долларов». Нажмите микрофон ещё раз, чтобы остановить.'}catch(e){$('hint').textContent='Не удалось запустить микрофон. Разрешите доступ в настройках Safari.'}}
 async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен. Сумма в рублях не будет рассчитана.'}
 function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
 function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
