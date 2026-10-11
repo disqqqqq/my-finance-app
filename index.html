@@ -6,7 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f2f3f7">
-<title>Финансы</title>
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<title>Финансы v6</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
@@ -144,13 +145,14 @@ $('hint').textContent=msgs[e.error]||'Не удалось распознать �
 try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Нажмите микрофон ещё раз, чтобы остановить.'}catch(e){$('hint').textContent='Не удалось запустить микрофон.'}}
 async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен.'}
 function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
-function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
+async function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
 const t={id:edit||Date.now()+''+Math.random().toString(16).slice(2),type,title:$('title').value.trim()||'Без названия',amount,cur:$('cur').value,cat:$('cat').value||'Другое',date:$('dt').value||loc(new Date()),rub:null,rate:null};
-if(t.cur==='USDT'&&db.rate){t.rub=amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}
+if(t.cur==='USDT'){if(!db.rate)await rate();if(db.rate){t.rub=amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}}
 if(edit)db.tx=db.tx.map(x=>x.id===edit?t:x);else db.tx.push(t);save();closeAdd();render()}
 function del(id){if(confirm('Удалить операцию?')){db.tx=db.tx.filter(t=>t.id!==id);save();render()}}
 function editTx(id){openAdd(id)}
 function render(){
+db.tx.forEach(t=>{if(t.cur==='USDT'&&!t.rub&&db.rate){t.rub=t.amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}});save();
 let bal=0;db.tx.forEach(t=>bal+=t.type?rubOf(t):-rubOf(t));$('balance').textContent=rub(bal);
 const today=new Date().toDateString();let i=0,o=0;db.tx.forEach(t=>{if(new Date(t.date).toDateString()===today){t.type?i+=rubOf(t):o+=rubOf(t)}});
 $('inToday').textContent=rub(i);$('outToday').textContent=rub(o);const net=i-o;$('netToday').textContent=rub(net);$('netToday').className=net>=0?'pos':'neg';
@@ -173,7 +175,8 @@ document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.
 function backup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='finance-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
 $('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.tx)throw 0;if(confirm('Заменить текущие данные копией?')){db=d;save();render()}}catch(x){alert('Неверный файл резервной копии.')}};r.readAsText(f)};
 function wipe(){if(confirm('Удалить все данные? Сначала сделайте резервную копию.')&&confirm('Точно удалить?')){localStorage.removeItem(K);db={tx:[],cats:structuredClone(DEF),rate:null};render()}}
-function saveCats(){const p=s=>s.split(/[,\n]/).map(x=>x.trim()).filter(Boolean);db.cats.out=p($('catOut').value);db.cats.inc=p($('catIn').value);save();cats();render()}
+function saveCats(){const p=s=>s.split(/[,
+]/).map(x=>x.trim()).filter(Boolean);db.cats.out=p($('catOut').value);db.cats.inc=p($('catIn').value);save();cats();render()}
 function exportCSV(){const rows=[['Дата','Тип','Название','Категория','Сумма','Валюта','В рублях','Курс','Время курса']];db.tx.forEach(t=>rows.push([t.date,t.type?'Доход':'Расход',t.title,t.cat,t.amount,t.cur,t.rub??'',t.rate?.v??'',t.rate?.at??'']));
 const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finance.csv';a.click()}
 cats();render();rate();
