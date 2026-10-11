@@ -5,69 +5,69 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f5f6f8">
+<meta name="theme-color" content="#f2f3f7">
 <title>Финансы</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--green:#16a34a;--red:#dc2626}
+:root{--bg:#f2f3f7;--card:#fff;--text:#0b1220;--muted:#7a8494;--line:#e8eaef;--blue:#0a84ff;--green:#30b15c;--red:#e5484d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Arial,sans-serif;padding-bottom:92px}
-.wrap{max-width:560px;margin:0 auto;padding:18px 18px 0}
-h1{font-size:28px;margin:6px 0 2px;letter-spacing:-.5px}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Arial,sans-serif;padding-bottom:100px}
+.wrap{max-width:560px;margin:0 auto;padding:20px 20px 0}
+h1{font-size:30px;margin:8px 0 2px;letter-spacing:-.6px;font-weight:800}
 .sub{color:var(--muted);font-size:14px}
-.card{background:var(--card);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 1px 2px rgba(16,24,40,.06)}
-.big{font-size:38px;font-weight:800;letter-spacing:-1px}
+.card{background:var(--card);border-radius:24px;padding:20px;margin:16px 0;box-shadow:0 6px 20px rgba(16,24,40,.06)}
+.balance{font-size:46px;font-weight:800;letter-spacing:-1.5px;margin-top:4px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.tile{background:#f3f4f6;border-radius:16px;padding:14px}
-.tile b{display:block;font-size:19px;margin-top:3px}
+.tile{background:#f6f7f9;border-radius:18px;padding:14px}
+.tile b{display:block;font-size:19px;margin-top:4px}
 .pos{color:var(--green)}.neg{color:var(--red)}
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(18px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(10px + env(safe-area-inset-bottom))}
-.nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px;width:25%}
-.nav button.active{color:var(--blue);font-weight:600}
-.nav span{font-size:22px}
-.add{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;box-shadow:0 8px 20px rgba(37,99,235,.35)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 calc(14px + env(safe-area-inset-bottom))}
+.nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;width:25%}
+.nav button.active{color:var(--blue);font-weight:700}
+.nav span{font-size:24px}
+.add{position:fixed;right:20px;bottom:calc(96px + env(safe-area-inset-bottom));width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;font-size:32px;box-shadow:0 10px 24px rgba(10,132,255,.35)}
 button{font:inherit;border:0;cursor:pointer}
-.ghost{background:#f3f4f6;color:var(--text);border-radius:14px;padding:13px 15px;width:100%}
-.primary{background:var(--blue);color:#fff;border-radius:16px;padding:16px;width:100%;font-weight:700;font-size:17px}
-input,select,textarea{width:100%;background:#f3f4f6;border:1.5px solid transparent;border-radius:14px;padding:14px;font:inherit;color:var(--text);outline:none}
+.ghost{background:#f0f1f5;color:var(--text);border-radius:16px;padding:14px 16px;width:100%}
+.primary{background:var(--blue);color:#fff;border-radius:18px;padding:17px;width:100%;font-weight:700;font-size:18px}
+input,select,textarea{width:100%;background:#f0f1f5;border:1.5px solid transparent;border-radius:16px;padding:15px;font:inherit;color:var(--text);outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--blue);background:#fff}
-label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
-.sheet{position:fixed;inset:0;background:rgba(17,24,39,.4);display:none;z-index:40;align-items:flex-end;justify-content:center}
+label{display:block;font-size:13px;color:var(--muted);margin:16px 0 7px}
+.sheet{position:fixed;inset:0;background:rgba(11,18,32,.45);display:none;z-index:40;align-items:flex-end;justify-content:center}
 .sheet.open{display:flex}
-.panel{width:min(560px,100%);background:#fff;border-radius:24px 24px 0 0;padding:14px 18px calc(24px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto}
-.grab{width:40px;height:5px;border-radius:99px;background:#d1d5db;margin:0 auto 14px}
-.mic{width:56px;height:56px;border-radius:50%;background:#f3f4f6;font-size:24px;flex:0 0 auto}
+.panel{width:min(560px,100%);background:#fff;border-radius:28px 28px 0 0;padding:16px 20px calc(28px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto}
+.grab{width:44px;height:5px;border-radius:99px;background:#d8dce3;margin:0 auto 16px}
+.mic{width:58px;height:58px;border-radius:50%;background:#f0f1f5;font-size:24px;flex:0 0 auto}
 .mic.rec{background:var(--red);color:#fff}
-.parse{background:#eef4ff;border-radius:14px;padding:12px;margin-top:12px;font-size:14px}
-.chips{display:flex;gap:8px;margin-top:10px}
-.chip{padding:8px 14px;border-radius:999px;background:#f3f4f6;font-size:14px}
+.parse{background:#eaf3ff;border-radius:16px;padding:13px;margin-top:14px;font-size:14px}
+.chips{display:flex;gap:8px;margin-top:12px}
+.chip{padding:9px 16px;border-radius:999px;background:#f0f1f5;font-size:15px}
 .chip.on{background:var(--blue);color:#fff}
-.tx{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.tx{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
 .tx:last-child{border:0}
 .t{font-weight:600}.m{font-size:13px;color:var(--muted)}
 .amt{font-weight:700;white-space:nowrap}
 .hidden{display:none!important}
-.actions{display:flex;gap:10px;margin-top:18px}
-.danger{background:#fee2e2;color:var(--red)}
-.day{padding:12px 0;border-bottom:1px solid var(--line)}
+.actions{display:flex;gap:10px;margin-top:20px}
+.danger{background:#fdeaea;color:var(--red)}
+.day{padding:13px 0;border-bottom:1px solid var(--line)}
 .day:last-child{border:0}
+.amount-input{font-size:30px;font-weight:800;text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div id="page-home">
-<div class="row" style="margin-top:8px"><div><h1>Мои финансы</h1><div class="sub" id="today"></div></div></div>
-<div class="card"><div class="sub">Баланс</div><div class="big" id="balance">0 ₽</div>
-<div class="grid3" style="margin-top:14px"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="outToday">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="netToday">0 ₽</b></div></div></div>
-<div class="card"><div class="row"><b>Последние операции</b><button class="ghost" style="width:auto;padding:8px 12px" onclick="show('history')">Все</button></div><div id="recent"></div></div>
+<div class="row" style="margin-top:10px"><div><h1>Мои финансы</h1><div class="sub" id="today"></div></div></div>
+<div class="card"><div class="sub">Общий баланс</div><div class="balance" id="balance">0 ₽</div>
+<div class="grid3" style="margin-top:16px"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="outToday">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="netToday">0 ₽</b></div></div></div>
+<div class="card"><div class="row"><b>Последние операции</b><button class="ghost" style="width:auto;padding:9px 14px" onclick="show('history')">Все</button></div><div id="recent" style="margin-top:6px"></div></div>
 </div>
 <div id="page-stats" class="hidden">
 <h1>Статистика</h1>
-<div class="row" style="gap:8px;margin:12px 0"><button class="ghost period on" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div>
-<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:12px"><span class="sub">Чистая прибыль</span><b id="sNet">0 ₽</b></div></div>
+<div class="row" style="gap:8px;margin:14px 0"><button class="ghost period on" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div>
+<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:14px"><span class="sub">Чистая прибыль</span><b id="sNet">0 ₽</b></div></div>
 <div class="card"><b>По дням</b><div id="days" style="margin-top:8px"></div></div>
 <div class="card"><b>Расходы по категориям</b><div id="cats" style="margin-top:12px"></div></div>
 </div>
@@ -75,9 +75,9 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 <h1>История</h1><div class="card"><div id="all"></div></div><button class="ghost" onclick="exportCSV()">Экспорт в CSV</button>
 </div>
 <div id="page-settings" class="hidden">
-<h1>Настройки</h1>
-<div class="card"><b>Данные на этом устройстве</b><p class="sub">Финансовые записи хранятся только в Safari на вашем iPhone. Делайте резервную копию.</p><button class="ghost" onclick="backup()">Скачать резервную копию</button><div style="height:10px"></div><label>Восстановить из файла</label><input type="file" id="restore" accept=".json"><div style="height:10px"></div><button class="ghost danger" onclick="wipe()">Удалить все данные</button></div>
-<div class="card"><b>Категории</b><label>Расходы</label><textarea id="catOut" rows="4"></textarea><label>Доходы</label><textarea id="catIn" rows="3"></textarea><div style="height:10px"></div><button class="ghost" onclick="saveCats()">Сохранить категории</button></div>
+<h1>Ещё</h1>
+<div class="card"><b>Данные на этом устройстве</b><p class="sub">Финансовые записи хранятся только в Safari на вашем iPhone. Делайте резервную копию.</p><button class="ghost" onclick="backup()">Скачать резервную копию</button><div style="height:12px"></div><label>Восстановить из файла</label><input type="file" id="restore" accept=".json"><div style="height:12px"></div><button class="ghost danger" onclick="wipe()">Удалить все данные</button></div>
+<div class="card"><b>Категории</b><label>Расходы</label><textarea id="catOut" rows="4"></textarea><label>Доходы</label><textarea id="catIn" rows="3"></textarea><div style="height:12px"></div><button class="ghost" onclick="saveCats()">Сохранить категории</button></div>
 </div>
 </div>
 <button class="add" onclick="openAdd()">＋</button>
@@ -88,19 +88,20 @@ label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
 <button data-page="settings" onclick="show('settings')"><span>⚙️</span>Ещё</button>
 </div>
 <div class="sheet" id="add"><div class="panel"><div class="grab"></div>
-<div class="row"><input id="say" placeholder="Например: вчера заработал 150 долларов" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
-<div class="sub" id="hint" style="margin-top:8px">Нажмите микрофон и говорите. Если голосовой ввод не работает, используйте диктовку клавиатуры Safari (микрофон рядом с пробелом).</div>
+<h1 style="font-size:24px">Новая операция</h1>
+<div class="row" style="margin-top:12px"><input id="say" placeholder="Например: вчера заработал 150 долларов" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
+<div class="sub" id="hint" style="margin-top:8px">Скажите или напишите естественно. Если голос не работает — используйте диктовку клавиатуры Safari.</div>
 <div class="parse hidden" id="parsed"></div>
 <div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div>
-<label>Название</label><input id="title">
-<div class="grid"><div><label>Сумма</label><input id="amount" type="number" inputmode="decimal"></div><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT / $</option></select></div></div>
+<label>Сумма</label><input id="amount" class="amount-input" type="number" inputmode="decimal" placeholder="0">
+<div class="grid" style="margin-top:4px"><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT / $</option></select></div><div><label>Дата и время</label><input id="dt" type="datetime-local"></div></div>
 <div id="usdt" class="hidden"><div class="sub" id="rate" style="margin-top:8px">Курс загружается…</div></div>
+<label>Название</label><input id="title">
 <label>Категория</label><select id="cat"></select>
-<label>Дата и время</label><input id="dt" type="datetime-local">
 <div class="actions"><button class="ghost" onclick="closeAdd()">Отмена</button><button class="primary" onclick="saveTx()">Сохранить</button></div>
 </div></div>
 <script>
-const K='financeAppV4',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
+const K='financeAppV5',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
 let db=JSON.parse(localStorage.getItem(K)||'null')||{tx:[],cats:structuredClone(DEF),rate:null};
 let type=0,edit=null,period='week',rec=null,live=false;
 const $=id=>document.getElementById(id);
@@ -133,16 +134,15 @@ setType(p.type);$('title').value=p.title||$('title').value;$('amount').value=p.a
 $('say').addEventListener('input',preview);
 function mic(){
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(!SR){$('hint').textContent='Голосовой ввод недоступен в этом браузере. Нажмите на поле ввода и используйте микрофон на клавиатуре Safari (диктовка).';return}
+if(!SR){$('hint').textContent='Голосовой ввод недоступен. Используйте диктовку клавиатуры Safari.';return}
 if(live){live=false;try{rec.stop()}catch(e){}$('mic').classList.remove('rec');return}
 rec=new SR();rec.lang='ru-RU';rec.continuous=true;rec.interimResults=true;
-let finalText='';
 rec.onresult=e=>{let text='';for(let i=0;i<e.results.length;i++)text+=e.results[i][0].transcript+' ';$('say').value=text.trim();preview()};
 rec.onend=()=>{if(live){try{rec.start()}catch(e){}}else{$('mic').classList.remove('rec')}};
-rec.onerror=e=>{const msgs={'not-allowed':'Разрешите доступ к микрофону в настройках Safari.','service-not-allowed':'Разрешите доступ к микрофону в настройках Safari.','audio-capture':'Микрофон не найден или занят другим приложением.','no-speech':'Речь не распознана. Говорите ближе к микрофону.'};
-$('hint').textContent=msgs[e.error]||'Не удалось распознать речь. Попробуйте ещё раз или используйте диктовку клавиатуры Safari.';};
-try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Например: «вчера заработал 150 долларов». Нажмите микрофон ещё раз, чтобы остановить.'}catch(e){$('hint').textContent='Не удалось запустить микрофон. Разрешите доступ в настройках Safari.'}}
-async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен. Сумма в рублях не будет рассчитана.'}
+rec.onerror=e=>{const msgs={'not-allowed':'Разрешите доступ к микрофону в настройках Safari.','service-not-allowed':'Разрешите доступ к микрофону в настройках Safari.','audio-capture':'Микрофон не найден или занят.','no-speech':'Речь не распознана. Говорите ближе к микрофону.'};
+$('hint').textContent=msgs[e.error]||'Не удалось распознать речь. Используйте диктовку клавиатуры Safari.';};
+try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Нажмите микрофон ещё раз, чтобы остановить.'}catch(e){$('hint').textContent='Не удалось запустить микрофон.'}}
+async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен.'}
 function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
 function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
 const t={id:edit||Date.now()+''+Math.random().toString(16).slice(2),type,title:$('title').value.trim()||'Без названия',amount,cur:$('cur').value,cat:$('cat').value||'Другое',date:$('dt').value||loc(new Date()),rub:null,rate:null};
@@ -156,7 +156,7 @@ const today=new Date().toDateString();let i=0,o=0;db.tx.forEach(t=>{if(new Date(
 $('inToday').textContent=rub(i);$('outToday').textContent=rub(o);const net=i-o;$('netToday').textContent=rub(net);$('netToday').className=net>=0?'pos':'neg';
 $('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
 const sorted=[...db.tx].sort((a,b)=>new Date(b.date)-new Date(a.date));
-const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="amt ${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount.toFixed(2)+' USDT':rub(t.amount)}</div><div class="m"><button class="ghost" style="width:auto;padding:5px 9px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:5px 9px;font-size:12px;color:var(--red)" onclick="del('${t.id}')">Удалить</button></div></div></div>`;
+const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="amt ${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount.toFixed(2)+' USDT':rub(t.amount)}</div><div class="m"><button class="ghost" style="width:auto;padding:6px 10px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:6px 10px;font-size:12px;color:var(--red)" onclick="del('${t.id}')">Удалить</button></div></div></div>`;
 $('recent').innerHTML=sorted.slice(0,5).map(row).join('')||'<div class="sub">Пока нет операций.</div>';
 $('all').innerHTML=sorted.map(row).join('')||'<div class="sub">Пока нет операций.</div>';
 const now=new Date();let from=new Date(0);
@@ -167,7 +167,7 @@ $('sIn').textContent=rub(si);$('sOut').textContent=rub(so);$('sNet').textContent
 const dkeys=Object.keys(days).sort((a,b)=>new Date(b.split('.').reverse().join('-'))-new Date(a.split('.').reverse().join('-')));
 $('days').innerHTML=dkeys.map(k=>{const d=days[k],n=d.i-d.o;return `<div class="day"><div class="row"><b>${k}</b><b class="${n>=0?'pos':'neg'}">${n>=0?'+':''}${rub(n)}</b></div><div class="m">Доходы: ${rub(d.i)} · Расходы: ${rub(d.o)}</div></div>`}).join('')||'<div class="sub">Пока нет данных.</div>';
 const mx=Math.max(1,...Object.values(cc));
-$('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div style="margin-bottom:12px"><div class="row"><span>${n}</span><b>${rub(v)}</b></div><div style="height:8px;background:#f3f4f6;border-radius:99px;margin-top:6px"><div style="width:${v/mx*100}%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>`).join('')||'<div class="sub">Нет расходов за период.</div>';
+$('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div style="margin-bottom:12px"><div class="row"><span>${n}</span><b>${rub(v)}</b></div><div style="height:8px;background:#f0f1f5;border-radius:99px;margin-top:6px"><div style="width:${v/mx*100}%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>`).join('')||'<div class="sub">Нет расходов за период.</div>';
 }
 document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.p;document.querySelectorAll('.period').forEach(x=>x.classList.remove('on'));b.classList.add('on');render()});
 function backup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='finance-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
