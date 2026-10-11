@@ -1,186 +1,27 @@
 <!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f2f3f7">
-<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-<title>Финансы v7</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon.svg">
-<style>
-:root{--bg:#f2f3f7;--card:#fff;--text:#0b1220;--muted:#7a8494;--line:#e8eaef;--blue:#0a84ff;--green:#30b15c;--red:#e5484d}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,Arial,sans-serif;padding-bottom:100px}
-.wrap{max-width:560px;margin:0 auto;padding:20px 20px 0;position:relative;z-index:1}
-h1{font-size:30px;margin:8px 0 2px;letter-spacing:-.6px;font-weight:800}
-.sub{color:var(--muted);font-size:14px}
-.card{background:var(--card);border-radius:24px;padding:20px;margin:16px 0;box-shadow:0 6px 20px rgba(16,24,40,.06)}
-.balance{font-size:46px;font-weight:800;letter-spacing:-1.5px;margin-top:4px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.tile{background:#f6f7f9;border-radius:18px;padding:14px}
-.tile b{display:block;font-size:19px;margin-top:4px}
-.pos{color:var(--green)}.neg{color:var(--red)}
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 calc(14px + env(safe-area-inset-bottom));z-index:30}
-.nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;width:25%}
-.nav button.active{color:var(--blue);font-weight:700}
-.nav span{font-size:24px}
-.add{position:fixed;right:20px;bottom:calc(96px + env(safe-area-inset-bottom));width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;font-size:32px;box-shadow:0 10px 24px rgba(10,132,255,.35);z-index:30}
-button{font:inherit;border:0;cursor:pointer;touch-action:manipulation}
-.ghost{background:#f0f1f5;color:var(--text);border-radius:16px;padding:14px 16px;width:100%}
-.primary{background:var(--blue);color:#fff;border-radius:18px;padding:17px;width:100%;font-weight:700;font-size:18px}
-input,select,textarea{width:100%;background:#f0f1f5;border:1.5px solid transparent;border-radius:16px;padding:15px;font:inherit;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--blue);background:#fff}
-label{display:block;font-size:13px;color:var(--muted);margin:16px 0 7px}
-.sheet{position:fixed;inset:0;background:rgba(11,18,32,.45);display:none;visibility:hidden;pointer-events:none;z-index:40;align-items:flex-end;justify-content:center}
-.sheet.open{display:flex;visibility:visible;pointer-events:auto}
-.panel{width:min(560px,100%);background:#fff;border-radius:28px 28px 0 0;padding:16px 20px calc(28px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto}
-.grab{width:44px;height:5px;border-radius:99px;background:#d8dce3;margin:0 auto 16px}
-.mic{width:58px;height:58px;border-radius:50%;background:#f0f1f5;font-size:24px;flex:0 0 auto}
-.mic.rec{background:var(--red);color:#fff}
-.parse{background:#eaf3ff;border-radius:16px;padding:13px;margin-top:14px;font-size:14px}
-.chips{display:flex;gap:8px;margin-top:12px}
-.chip{padding:9px 16px;border-radius:999px;background:#f0f1f5;font-size:15px}
-.chip.on{background:var(--blue);color:#fff}
-.tx{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
-.tx:last-child{border:0}
-.t{font-weight:600}.m{font-size:13px;color:var(--muted)}
-.amt{font-weight:700;white-space:nowrap}
-.hidden{display:none!important}
-.actions{display:flex;gap:10px;margin-top:20px}
-.danger{background:#fdeaea;color:var(--red)}
-.day{padding:13px 0;border-bottom:1px solid var(--line)}
-.day:last-child{border:0}
-.amount-input{font-size:30px;font-weight:800;text-align:center}
-</style>
-</head>
-<body>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#f2f3f7"><meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"><title>Мои финансы</title><style>
+:root{--bg:#f2f3f7;--card:#fff;--text:#0b1220;--muted:#7a8494;--line:#e8eaef;--blue:#0a84ff;--green:#30b15c;--red:#e5484d}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:var(--text);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;padding-bottom:100px}.wrap{max-width:560px;margin:0 auto;padding:20px}h1{font-size:30px;margin:8px 0 2px;font-weight:800}.sub{color:var(--muted);font-size:14px}.card{background:#fff;border-radius:24px;padding:20px;margin:16px 0;box-shadow:0 6px 20px #10182810}.balance{font-size:46px;font-weight:800}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{background:#f6f7f9;border-radius:18px;padding:14px}.tile b{display:block;font-size:19px;margin-top:4px}.pos{color:var(--green)}.neg{color:var(--red)}button{font:inherit;border:0;cursor:pointer;touch-action:manipulation}.ghost{background:#f0f1f5;color:var(--text);border-radius:16px;padding:12px 16px}.primary{background:var(--blue);color:white;border-radius:18px;padding:16px;width:100%;font-weight:700}input,select,textarea{width:100%;background:#f0f1f5;border:1px solid transparent;border-radius:16px;padding:14px;font:inherit;color:var(--text)}label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}.nav{position:fixed;z-index:10;bottom:0;left:0;right:0;background:#ffffffed;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 calc(14px + env(safe-area-inset-bottom))}.nav button{background:none;color:var(--muted);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px;width:25%}.nav .active{color:var(--blue)}.nav span{font-size:24px}.add{position:fixed;z-index:11;right:20px;bottom:100px;width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;font-size:32px;box-shadow:0 10px 24px #0a84ff55}.hidden{display:none!important}.sheet{position:fixed;inset:0;z-index:20;background:#0b122077;display:none;align-items:flex-end;justify-content:center}.sheet.open{display:flex}.panel{background:white;width:min(560px,100%);border-radius:28px 28px 0 0;padding:20px;max-height:94vh;overflow:auto}.chips,.actions{display:flex;gap:10px;margin-top:12px}.chip{background:#f0f1f5;border-radius:20px;padding:9px 16px}.chip.on{background:var(--blue);color:white}.tx,.day{padding:14px 0;border-bottom:1px solid var(--line)}.t{font-weight:600}.m{font-size:13px;color:var(--muted)}.amount-input{text-align:center;font-size:30px;font-weight:800}.parse{margin-top:12px;background:#eaf3ff;border-radius:14px;padding:12px}.danger{color:var(--red)}
+</style></head><body>
 <div class="wrap">
-<div id="page-home">
-<div class="row" style="margin-top:10px"><div><h1>Мои финансы</h1><div class="sub" id="today"></div></div></div>
-<div class="card"><div class="sub">Общий баланс</div><div class="balance" id="balance">0 ₽</div>
-<div class="grid3" style="margin-top:16px"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="outToday">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="netToday">0 ₽</b></div></div></div>
-<div class="card"><div class="row"><b>Последние операции</b><button class="ghost" style="width:auto;padding:9px 14px" onclick="show('history')">Все</button></div><div id="recent" style="margin-top:6px"></div></div>
+<section id="page-home"><h1>Мои финансы</h1><div class="sub" id="today"></div><div class="card"><div class="sub">Общий баланс</div><div class="balance" id="balance">0 ₽</div><div class="grid3" style="margin-top:16px"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="inToday">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="outToday">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="netToday">0 ₽</b></div></div></div><div class="card"><div class="row"><b>Последние операции</b><button class="ghost" onclick="show('history')">Все</button></div><div id="recent"></div></div></section>
+<section id="page-stats" class="hidden"><h1>Статистика</h1><div class="row" style="margin:14px 0"><button class="ghost period" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div><div class="card"><div class="grid3"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div><div class="tile"><span class="sub">Прибыль</span><b id="sNet">0 ₽</b></div></div></div><div class="card"><b>По дням</b><div id="days"></div></div><div class="card"><b>Расходы по категориям</b><div id="cats"></div></div></section>
+<section id="page-history" class="hidden"><h1>История</h1><div class="card" id="all"></div><button class="ghost" onclick="exportCSV()">Экспорт в CSV</button></section>
+<section id="page-settings" class="hidden"><h1>Ещё</h1><div class="card"><b>Резервная копия</b><p class="sub">Данные хранятся локально в этом браузере.</p><button class="ghost" onclick="backup()">Скачать копию</button><label>Восстановить из JSON</label><input type="file" id="restore" accept=".json"><div style="height:10px"></div><button class="ghost danger" onclick="wipe()">Удалить все данные</button></div><div class="card"><b>Категории</b><label>Расходы, через запятую или с новой строки</label><textarea id="catOut" rows="4"></textarea><label>Доходы</label><textarea id="catIn" rows="3"></textarea><button class="ghost" style="margin-top:10px" onclick="saveCats()">Сохранить категории</button></div></section>
 </div>
-<div id="page-stats" class="hidden">
-<h1>Статистика</h1>
-<div class="row" style="gap:8px;margin:14px 0"><button class="ghost period on" data-p="week">Неделя</button><button class="ghost period" data-p="month">Месяц</button><button class="ghost period" data-p="all">Всё время</button></div>
-<div class="card"><div class="grid"><div class="tile"><span class="sub">Доходы</span><b class="pos" id="sIn">0 ₽</b></div><div class="tile"><span class="sub">Расходы</span><b class="neg" id="sOut">0 ₽</b></div></div><div class="row" style="margin-top:14px"><span class="sub">Чистая прибыль</span><b id="sNet">0 ₽</b></div></div>
-<div class="card"><b>По дням</b><div id="days" style="margin-top:8px"></div></div>
-<div class="card"><b>Расходы по категориям</b><div id="cats" style="margin-top:12px"></div></div>
-</div>
-<div id="page-history" class="hidden">
-<h1>История</h1><div class="card"><div id="all"></div></div><button class="ghost" onclick="exportCSV()">Экспорт в CSV</button>
-</div>
-<div id="page-settings" class="hidden">
-<h1>Ещё</h1>
-<div class="card"><b>Данные на этом устройстве</b><p class="sub">Финансовые записи хранятся только в Safari на вашем iPhone. Делайте резервную копию.</p><button class="ghost" onclick="backup()">Скачать резервную копию</button><div style="height:12px"></div><label>Восстановить из файла</label><input type="file" id="restore" accept=".json"><div style="height:12px"></div><button class="ghost danger" onclick="wipe()">Удалить все данные</button></div>
-<div class="card"><b>Категории</b><label>Расходы</label><textarea id="catOut" rows="4"></textarea><label>Доходы</label><textarea id="catIn" rows="3"></textarea><div style="height:12px"></div><button class="ghost" onclick="saveCats()">Сохранить категории</button></div>
-</div>
-</div>
-<button class="add" onclick="openAdd()">＋</button>
-<div class="nav">
-<button class="active" data-page="home" onclick="show('home')"><span>🏠</span>Главная</button>
-<button data-page="stats" onclick="show('stats')"><span>📊</span>Статистика</button>
-<button data-page="history" onclick="show('history')"><span>🕘</span>История</button>
-<button data-page="settings" onclick="show('settings')"><span>⚙️</span>Ещё</button>
-</div>
-<div class="sheet" id="add"><div class="panel"><div class="grab"></div>
-<h1 style="font-size:24px">Новая операция</h1>
-<div class="row" style="margin-top:12px"><input id="say" placeholder="Например: вчера заработал 150 долларов" style="flex:1"><button class="mic" id="mic" onclick="mic()">🎙</button></div>
-<div class="sub" id="hint" style="margin-top:8px">Скажите или напишите естественно. Если голос не работает — используйте диктовку клавиатуры Safari.</div>
-<div class="parse hidden" id="parsed"></div>
-<div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div>
-<label>Сумма</label><input id="amount" class="amount-input" type="number" inputmode="decimal" placeholder="0">
-<div class="grid" style="margin-top:4px"><div><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">₽ RUB</option><option value="USDT">USDT / $</option></select></div><div><label>Дата и время</label><input id="dt" type="datetime-local"></div></div>
-<div id="usdt" class="hidden"><div class="sub" id="rate" style="margin-top:8px">Курс загружается…</div></div>
-<label>Название</label><input id="title">
-<label>Категория</label><select id="cat"></select>
-<div class="actions"><button class="ghost" onclick="closeAdd()">Отмена</button><button class="primary" onclick="saveTx()">Сохранить</button></div>
-</div></div>
+<button class="add" onclick="openAdd()">＋</button><nav class="nav"><button class="active" data-page="home" onclick="show('home')"><span>🏠</span>Главная</button><button data-page="stats" onclick="show('stats')"><span>📊</span>Статистика</button><button data-page="history" onclick="show('history')"><span>🕘</span>История</button><button data-page="settings" onclick="show('settings')"><span>⚙️</span>Ещё</button></nav>
+<div class="sheet" id="add"><div class="panel"><div class="row"><h1 style="font-size:24px">Новая операция</h1><button class="ghost" onclick="closeAdd()">Закрыть</button></div><input id="say" placeholder="Например: вчера заработал 150 USDT" style="margin-top:12px"><div class="parse hidden" id="parsed"></div><div class="chips"><button class="chip on" id="chipOut" onclick="setType(0)">Расход</button><button class="chip" id="chipIn" onclick="setType(1)">Доход</button></div><label>Сумма</label><input id="amount" class="amount-input" type="number" inputmode="decimal" placeholder="0"><label>Валюта</label><select id="cur" onchange="curChange()"><option value="RUB">RUB ₽</option><option value="USDT">USDT</option></select><div class="sub" id="rate" style="margin-top:6px"></div><label>Дата и время</label><input id="dt" type="datetime-local"><label>Название</label><input id="title"><label>Категория</label><select id="cat"></select><div class="actions"><button class="ghost" style="flex:1" onclick="closeAdd()">Отмена</button><button class="primary" style="flex:1" onclick="saveTx()">Сохранить</button></div></div></div>
 <script>
-const K='financeAppV5',DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};
-let db=JSON.parse(localStorage.getItem(K)||'null')||{tx:[],cats:structuredClone(DEF),rate:null};
-let type=0,edit=null,period='week',rec=null,live=false;
-const $=id=>document.getElementById(id);
-const save=()=>localStorage.setItem(K,JSON.stringify(db));
-const rub=n=>Math.round(n).toLocaleString('ru-RU')+' ₽';
-const rubOf=t=>t.cur==='USDT'?(t.rub||0):t.amount;
-const loc=d=>{const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`};
-const when=s=>new Date(s).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-const dayKey=s=>new Date(s).toLocaleDateString('ru-RU');
-function show(p){['home','stats','history','settings'].forEach(x=>$('page-'+x).classList.toggle('hidden',x!==p));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}
-function setType(i){type=i;$('chipOut').classList.toggle('on',!i);$('chipIn').classList.toggle('on',!!i);cats()}
-function cats(){const c=type?db.cats.inc:db.cats.out;$('cat').innerHTML=c.map(x=>`<option>${x}</option>`).join('')}
-function openAdd(id){edit=id||null;$('add').classList.add('open');$('say').value='';$('parsed').classList.add('hidden');setType(0);
-if(id){const t=db.tx.find(x=>x.id===id);setType(t.type);$('title').value=t.title;$('amount').value=t.amount;$('cur').value=t.cur;$('dt').value=t.date.slice(0,16);$('cat').value=t.cat;curChange()}
-else{$('title').value='';$('amount').value='';$('dt').value=loc(new Date());curChange()}}
-function closeAdd(){live=false;try{rec&&rec.stop()}catch(e){}$('mic').classList.remove('rec');$('add').classList.remove('open')}
+'use strict';
+const K='financeAppV5';const DEF={out:['Продукты','Кафе','Рестораны','Транспорт','Такси','Жильё','Здоровье','Одежда','Развлечения','Связь','Образование','Другое'],inc:['Зарплата','Фриланс','Подарки','Инвестиции','Другое']};const $=id=>document.getElementById(id);let db;try{db=JSON.parse(localStorage.getItem(K)||'null')}catch(e){db=null}if(!db||!Array.isArray(db.tx))db={tx:[],cats:JSON.parse(JSON.stringify(DEF)),rate:null};if(!db.cats)db.cats=JSON.parse(JSON.stringify(DEF));let type=0,edit=null,period='week',ratePromise=null;const save=()=>localStorage.setItem(K,JSON.stringify(db));const rub=n=>Math.round(Number(n)||0).toLocaleString('ru-RU')+' ₽';const rubOf=t=>t.cur==='USDT'?(Number(t.rub)||0):Number(t.amount)||0;const loc=d=>{const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`};const when=s=>new Date(s).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});const dayKey=s=>new Date(s).toLocaleDateString('ru-RU');
+function show(p){['home','stats','history','settings'].forEach(x=>$('page-'+x).classList.toggle('hidden',x!==p));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}function cats(){let a=(type?db.cats.inc:db.cats.out)||['Другое'];$('cat').innerHTML=a.map(x=>`<option>${x}</option>`).join('')}function setType(i){type=Number(i);$('chipOut').classList.toggle('on',type===0);$('chipIn').classList.toggle('on',type===1);cats()}
+function openAdd(id){edit=id||null;$('add').classList.add('open');$('say').value='';$('parsed').classList.add('hidden');setType(0);$('cur').value='RUB';$('title').value='';$('amount').value='';$('dt').value=loc(new Date());if(edit){let t=db.tx.find(x=>x.id===edit);if(!t)return;setType(t.type);$('title').value=t.title;$('amount').value=t.amount;$('cur').value=t.cur;$('dt').value=t.date.slice(0,16);cats();$('cat').value=t.cat}curChange()}function closeAdd(){$('add').classList.remove('open')}
 const RULES=[[/продукт|магнит|пятёрочк|перекрёсток|лента|ашан|супермаркет|овощ|фрукт|мясо/i,'Продукты'],[/кафе|кофе|ресторан|обед|ужин|завтрак|пицц|бургер|шаверм/i,'Кафе'],[/такси|uber|яндекс go|метро|автобус|бензин|заправк|парковк/i,'Транспорт'],[/аренд|кварт|ипотек|коммунал|жкх|электр|вода|интернет/i,'Жильё'],[/аптек|лекарств|врач|клиник|стомат|здоров/i,'Здоровье'],[/одежд|обув/i,'Одежда'],[/кино|игр|развлеч|концерт|подписк/i,'Развлечения'],[/связь|мтс|билайн|мегафон|телефон/i,'Связь'],[/учеб|курс|книг/i,'Образование'],[/зарплат|зп|оклад/i,'Зарплата'],[/фриланс|заказ|клиент/i,'Фриланс'],[/подарок|подарили/i,'Подарки'],[/инвест|дивиденд|процент|кешбэк/i,'Инвестиции']];
-function parse(text){text=(text||'').trim();const r={title:'',amount:null,cur:'RUB',type:0,cat:'',date:new Date()};
-const m=text.match(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*|\$)?/i);
-if(m){r.amount=parseFloat(m[1].replace(/[^\d.,]/g,'').replace(',','.'));if(m[2]&&/usdt|usd|долл|\$/i.test(m[2]))r.cur='USDT'}
-if(/вчера/i.test(text))r.date.setDate(r.date.getDate()-1);
-if(/позавчера/i.test(text))r.date.setDate(r.date.getDate()-2);
-if(/получил|зарплата|зп|доход|заработал|фриланс|подарок|подарили|инвест|дивиденд|кешбэк/i.test(text))r.type=1;
-for(const[re,cat]of RULES)if(re.test(text)){r.cat=cat;break}
-r.title=text.replace(/(\d[\d\s.,]*)\s*(руб|рубл\w*|₽|usdt|usd|долл\w*|\$)?/i,'').replace(/\b(вчера|позавчера|сегодня|купил|купила|потратил|потратила|получил|получила|заработал|заработала)\b/gi,' ').replace(/\s+/g,' ').trim();
-if(!r.cat)r.cat='Другое';return r}
-function preview(){const p=parse($('say').value);if(!p.amount&&!p.title){$('parsed').classList.add('hidden');return}
-$('parsed').classList.remove('hidden');$('parsed').innerHTML=`Распознано: <b>${p.type?'доход':'расход'}</b> · <b>${p.amount?p.amount+' '+(p.cur==='USDT'?'USDT':'₽'):'сумма не найдена'}</b> · ${p.cat} · ${when(p.date)}`;
-setType(p.type);$('title').value=p.title||$('title').value;$('amount').value=p.amount??'';$('cur').value=p.cur;$('cat').value=p.cat;$('dt').value=loc(p.date);curChange()}
-$('say').addEventListener('input',preview);
-function mic(){
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(!SR){$('hint').textContent='Голосовой ввод недоступен. Используйте диктовку клавиатуры Safari.';return}
-if(live){live=false;try{rec.stop()}catch(e){}$('mic').classList.remove('rec');return}
-rec=new SR();rec.lang='ru-RU';rec.continuous=true;rec.interimResults=true;
-rec.onresult=e=>{let text='';for(let i=0;i<e.results.length;i++)text+=e.results[i][0].transcript+' ';$('say').value=text.trim();preview()};
-rec.onend=()=>{if(live){try{rec.start()}catch(e){}}else{$('mic').classList.remove('rec')}};
-rec.onerror=e=>{const msgs={'not-allowed':'Разрешите доступ к микрофону в настройках Safari.','service-not-allowed':'Разрешите доступ к микрофону в настройках Safari.','audio-capture':'Микрофон не найден или занят.','no-speech':'Речь не распознана. Говорите ближе к микрофону.'};
-$('hint').textContent=msgs[e.error]||'Не удалось распознать речь. Используйте диктовку клавиатуры Safari.';};
-try{rec.start();live=true;$('mic').classList.add('rec');$('hint').textContent='Слушаю… Нажмите микрофон ещё раз, чтобы остановить.'}catch(e){$('hint').textContent='Не удалось запустить микрофон.'}}
-async function rate(){try{const r=await fetch('https://api.exchangerate.host/latest?base=USDT&symbols=RUB');const j=await r.json();if(j?.rates?.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'exchangerate.host'};save()}}catch(e){}$('rate').textContent=db.rate?`1 USDT ≈ ${db.rate.v.toFixed(2)} ₽ · ${new Date(db.rate.at).toLocaleString('ru-RU')} · ${db.rate.src}`:'Курс USDT недоступен.'}
-function curChange(){const u=$('cur').value==='USDT';$('usdt').classList.toggle('hidden',!u);if(u)rate()}
-async function saveTx(){const amount=parseFloat($('amount').value);if(!amount||amount<=0){alert('Введите сумму');return}
-const t={id:edit||Date.now()+''+Math.random().toString(16).slice(2),type,title:$('title').value.trim()||'Без названия',amount,cur:$('cur').value,cat:$('cat').value||'Другое',date:$('dt').value||loc(new Date()),rub:null,rate:null};
-if(t.cur==='USDT'){if(!db.rate)await rate();if(db.rate){t.rub=amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}}
-if(edit)db.tx=db.tx.map(x=>x.id===edit?t:x);else db.tx.push(t);save();closeAdd();render()}
-function del(id){if(confirm('Удалить операцию?')){db.tx=db.tx.filter(t=>t.id!==id);save();render()}}
-function editTx(id){openAdd(id)}
-function render(){
-db.tx.forEach(t=>{if(t.cur==='USDT'&&!t.rub&&db.rate){t.rub=t.amount*db.rate.v;t.rate={v:db.rate.v,at:db.rate.at,src:db.rate.src}}});save();
-let bal=0;db.tx.forEach(t=>bal+=t.type?rubOf(t):-rubOf(t));$('balance').textContent=rub(bal);
-const today=new Date().toDateString();let i=0,o=0;db.tx.forEach(t=>{if(new Date(t.date).toDateString()===today){t.type?i+=rubOf(t):o+=rubOf(t)}});
-$('inToday').textContent=rub(i);$('outToday').textContent=rub(o);const net=i-o;$('netToday').textContent=rub(net);$('netToday').className=net>=0?'pos':'neg';
-$('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
-const sorted=[...db.tx].sort((a,b)=>new Date(b.date)-new Date(a.date));
-const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="amt ${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount.toFixed(2)+' USDT':rub(t.amount)}</div><div class="m"><button class="ghost" style="width:auto;padding:6px 10px;font-size:12px" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost" style="width:auto;padding:6px 10px;font-size:12px;color:var(--red)" onclick="del('${t.id}')">Удалить</button></div></div></div>`;
-$('recent').innerHTML=sorted.slice(0,5).map(row).join('')||'<div class="sub">Пока нет операций.</div>';
-$('all').innerHTML=sorted.map(row).join('')||'<div class="sub">Пока нет операций.</div>';
-const now=new Date();let from=new Date(0);
-if(period==='week'){from=new Date(now);from.setDate(now.getDate()-6);from.setHours(0,0,0,0)}else if(period==='month')from=new Date(now.getFullYear(),now.getMonth(),1);
-const list=db.tx.filter(t=>new Date(t.date)>=from);let si=0,so=0;const cc={},days={};
-list.forEach(t=>{const v=rubOf(t),k=dayKey(t.date);days[k]=days[k]||{i:0,o:0};t.type?(si+=v,days[k].i+=v):(so+=v,days[k].o+=v,cc[t.cat]=(cc[t.cat]||0)+v)});
-$('sIn').textContent=rub(si);$('sOut').textContent=rub(so);$('sNet').textContent=rub(si-so);
-const dkeys=Object.keys(days).sort((a,b)=>new Date(b.split('.').reverse().join('-'))-new Date(a.split('.').reverse().join('-')));
-$('days').innerHTML=dkeys.map(k=>{const d=days[k],n=d.i-d.o;return `<div class="day"><div class="row"><b>${k}</b><b class="${n>=0?'pos':'neg'}">${n>=0?'+':''}${rub(n)}</b></div><div class="m">Доходы: ${rub(d.i)} · Расходы: ${rub(d.o)}</div></div>`}).join('')||'<div class="sub">Пока нет данных.</div>';
-const mx=Math.max(1,...Object.values(cc));
-$('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([n,v])=>`<div style="margin-bottom:12px"><div class="row"><span>${n}</span><b>${rub(v)}</b></div><div style="height:8px;background:#f0f1f5;border-radius:99px;margin-top:6px"><div style="width:${v/mx*100}%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>`).join('')||'<div class="sub">Нет расходов за период.</div>';
-}
-document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.p;document.querySelectorAll('.period').forEach(x=>x.classList.remove('on'));b.classList.add('on');render()});
-function backup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='finance-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
-$('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.tx)throw 0;if(confirm('Заменить текущие данные копией?')){db=d;save();render()}}catch(x){alert('Неверный файл резервной копии.')}};r.readAsText(f)};
-function wipe(){if(confirm('Удалить все данные? Сначала сделайте резервную копию.')&&confirm('Точно удалить?')){localStorage.removeItem(K);db={tx:[],cats:structuredClone(DEF),rate:null};render()}}
-function saveCats(){const p=s=>s.split(/[,
-]/).map(x=>x.trim()).filter(Boolean);db.cats.out=p($('catOut').value);db.cats.inc=p($('catIn').value);save();cats();render()}
-function exportCSV(){const rows=[['Дата','Тип','Название','Категория','Сумма','Валюта','В рублях','Курс','Время курса']];db.tx.forEach(t=>rows.push([t.date,t.type?'Доход':'Расход',t.title,t.cat,t.amount,t.cur,t.rub??'',t.rate?.v??'',t.rate?.at??'']));
-const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finance.csv';a.click()}
-cats();render();rate();
-if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{})}
-</script>
-</body>
-</html>
+function parseText(text){let d=new Date(),m=text.match(/(\d[\d\s.,]*)\s*(руб\w*|₽|usdt|usd|долл\w*|\$)?/i),amount=m?parseFloat(m[1].replace(/\s/g,'').replace(',','.')):null,cur=m&&m[2]&&/usdt|usd|долл|\$/i.test(m[2])?'USDT':'RUB',income=/получил|получила|зарплата|\bзп\b|доход|заработал|заработала|фриланс|подарили|инвест|дивиденд|кешбэк/i.test(text),cat='Другое';if(/вчера/i.test(text))d.setDate(d.getDate()-1);if(/позавчера/i.test(text))d.setDate(d.getDate()-2);for(const [re,c]of RULES)if(re.test(text)){cat=c;break}let title=text.replace(/\d[\d\s.,]*\s*(руб\w*|₽|usdt|usd|долл\w*|\$)?/i,'').replace(/\b(вчера|позавчера|сегодня|купил|купила|потратил|потратила|получил|получила|заработал|заработала)\b/gi,' ').trim();return{amount,cur,type:income?1:0,cat,title,date:d}}
+$('say').addEventListener('input',()=>{let p=parseText($('say').value);if(!$('say').value.trim()){$('parsed').classList.add('hidden');return}$('parsed').classList.remove('hidden');$('parsed').textContent=`${p.type?'Доход':'Расход'} · ${p.amount??'сумма?'} ${p.cur} · ${p.cat}`;setType(p.type);if(p.amount)$('amount').value=p.amount;$('cur').value=p.cur;$('title').value=p.title;cats();$('cat').value=p.cat;$('dt').value=loc(p.date);curChange()});
+async function rate(){if(ratePromise)return ratePromise;ratePromise=(async()=>{try{let r=await fetch('https://api.frankfurter.app/latest?from=USD&to=RUB');let j=await r.json();if(j&&j.rates&&j.rates.RUB){db.rate={v:j.rates.RUB,at:new Date().toISOString(),src:'Frankfurter USD/RUB'};save()}}catch(e){}$('rate').textContent=db.rate?`Справочный USD/RUB ${db.rate.v.toFixed(2)}. USDT≈USD; проверьте курс перед сохранением.`:'Курс недоступен — USDT будет сохранён без рублёвого пересчёта.';return db.rate})();return ratePromise}function curChange(){if($('cur').value==='USDT')rate();else $('rate').textContent=''}
+async function saveTx(){let amount=Number($('amount').value);if(!Number.isFinite(amount)||amount<=0){alert('Введите сумму');return}let cur=$('cur').value,rateUsed=null;if(cur==='USDT'){await rate();if(db.rate)rateUsed=db.rate.v}let t={id:edit||Date.now().toString()+Math.random().toString(16).slice(2),type,title:$('title').value.trim()||'Без названия',amount,cur,cat:$('cat').value||'Другое',date:$('dt').value||loc(new Date()),rub:cur==='USDT'&&rateUsed?amount*rateUsed:null,rate:cur==='USDT'&&rateUsed?{v:rateUsed,at:db.rate.at,src:db.rate.src}:null};if(edit)db.tx=db.tx.map(x=>x.id===edit?t:x);else db.tx.push(t);save();closeAdd();render()}
+function del(id){if(confirm('Удалить операцию?')){db.tx=db.tx.filter(t=>t.id!==id);save();render()}}function editTx(id){openAdd(id)}
+function render(){let bal=0,i=0,o=0,today=new Date().toDateString();db.tx.forEach(t=>{let v=rubOf(t);bal+=t.type?v:-v;if(new Date(t.date).toDateString()===today)t.type?i+=v:o+=v});$('balance').textContent=rub(bal);$('inToday').textContent=rub(i);$('outToday').textContent=rub(o);$('netToday').textContent=rub(i-o);$('netToday').className=i-o>=0?'pos':'neg';$('today').textContent=new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});let sorted=[...db.tx].sort((a,b)=>new Date(b.date)-new Date(a.date));const row=t=>`<div class="tx"><div><div class="t">${t.title}</div><div class="m">${t.cat} · ${when(t.date)}</div></div><div style="text-align:right"><div class="${t.type?'pos':'neg'}">${t.type?'+':'−'}${t.cur==='USDT'?t.amount+' USDT':rub(t.amount)}</div><button class="ghost" onclick="editTx('${t.id}')">Изменить</button> <button class="ghost danger" onclick="del('${t.id}')">Удалить</button></div></div>`;$('recent').innerHTML=sorted.slice(0,5).map(row).join('')||'<p class="sub">Пока нет операций.</p>';$('all').innerHTML=sorted.map(row).join('')||'<p class="sub">Пока нет операций.</p>';let from=new Date(0),now=new Date();if(period==='week'){from=new Date(now);from.setDate(now.getDate()-6);from.setHours(0,0,0,0)}else if(period==='month')from=new Date(now.getFullYear(),now.getMonth(),1);let si=0,so=0,days={},cc={};db.tx.filter(t=>new Date(t.date)>=from).forEach(t=>{let v=rubOf(t),k=dayKey(t.date);days[k]=days[k]||{i:0,o:0};if(t.type){si+=v;days[k].i+=v}else{so+=v;days[k].o+=v;cc[t.cat]=(cc[t.cat]||0)+v}});$('sIn').textContent=rub(si);$('sOut').textContent=rub(so);$('sNet').textContent=rub(si-so);$('days').innerHTML=Object.entries(days).map(([k,d])=>`<div class="day"><b>${k}</b><div class="m">Доходы ${rub(d.i)} · Расходы ${rub(d.o)}</div></div>`).join('')||'<p class="sub">Нет данных</p>';$('cats').innerHTML=Object.entries(cc).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="day">${k}: ${rub(v)}</div>`).join('')||'<p class="sub">Нет расходов</p>'}
+document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.p;render()});function backup(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='finance-backup.json';a.click()}$('restore').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d.tx))throw 0;if(confirm('Заменить текущие записи?')){db=d;save();render()}}catch(x){alert('Неверная резервная копия')}};r.readAsText(f)};function wipe(){if(confirm('Удалить все данные?')&&confirm('Точно удалить?')){db={tx:[],cats:JSON.parse(JSON.stringify(DEF)),rate:null};save();render()}}function saveCats(){const p=s=>s.split(/[,
+]/).map(x=>x.trim()).filter(Boolean);db.cats.out=p($('catOut').value);db.cats.inc=p($('catIn').value);save();cats();render()}function exportCSV(){let rows=[['Дата','Тип','Название','Категория','Сумма','Валюта','RUB','Курс']];db.tx.forEach(t=>rows.push([t.date,t.type?'Доход':'Расход',t.title,t.cat,t.amount,t.cur,t.rub||'',t.rate?.v||'']));let csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finance.csv';a.click()}cats();render();
+</script></body></html>
